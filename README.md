@@ -1,6 +1,8 @@
 # Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval
 
-<img src="./figures/sem-pcyc.png" width="500" align="middle">
+<p align="center">
+<img src="./figures/sem-pcyc.png" width="500">
+</p>
 
 This is the repository for generating some key results of our CVPR 2019 paper:
 
@@ -8,7 +10,9 @@ This is the repository for generating some key results of our CVPR 2019 paper:
 
 Zero-Shot Sketch-based Image Retrieval Demo
 
+<p align="center">
 <img src="./figures/sem-pcyc-demo.gif" width="500" align="middle">
+</p>
 
 ### Models
 
