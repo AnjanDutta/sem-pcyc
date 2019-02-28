@@ -1,4 +1,4 @@
-# Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval
+# SEM-PCYC
 
 <p align="center">
 <img src="./figures/sem-pcyc.png" width="800">
@@ -8,7 +8,7 @@ This is the repository for generating some key results of our CVPR 2019 paper:
 
 **Anjan Dutta and Zeynep Akata. Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval, CVPR, 2019**
 
-Zero-Shot Sketch-based Image Retrieval Demo
+* Zero-Shot Sketch-based Image Retrieval Demo
 
 <p align="center">
 <img src="./figures/sem-pcyc-demo.gif" width="500" align="middle">
