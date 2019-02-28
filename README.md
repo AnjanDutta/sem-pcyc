@@ -8,7 +8,7 @@ This is the repository for generating some key results of our CVPR 2019 paper:
 
 Zero-Shot Sketch-based Image Retrieval Demo
 
-![Alt text](./figures/sem-pcyc-demo.gif)
+![Alt text](./figures/sem-pcyc-demo.gif | width=100)
 
 ### Models
 
