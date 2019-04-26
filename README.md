@@ -6,7 +6,7 @@
 <img src="./figures/sem-pcyc.png" width="800">
 </p>
 
-PyTorch implementation for generating some key results of our SEM-PCYC paper on zero-shot sketch-based image retrieval:  
+PyTorch implementation of our SEM-PCYC model for zero-shot sketch-based image retrieval:  
 [Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval](https://arxiv.org/abs/1903.03372)  
 [Anjan Dutta](https://sites.google.com/site/2adutta/), [Zeynep Akata](https://ivi.fnwi.uva.nl/uvaboschdeltalab/people/zeynep-akata/)  
 [CVPR, 2019](http://cvpr2019.thecvf.com/)
@@ -19,7 +19,7 @@ PyTorch implementation for generating some key results of our SEM-PCYC paper on 
 
 ## Retrieval Results
 
-#### Sketchy  
+#### Sketchy
 
 <p align="center">
 <img src="./figures/qual_results/sketchy/3/pear.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/1_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/2_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/3_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/4_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/5_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/6_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/7_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/8_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/9_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/10_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/11_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/12_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/13_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/14_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/15_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/16_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/17_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/18_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/19_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/20_1.png" width="4.3%"><br>
@@ -44,30 +44,28 @@ PyTorch implementation for generating some key results of our SEM-PCYC paper on 
 ## Getting Started
 
 ### Installation
-```
+```bash
 git clone https://github.com/AnjanDutta/sem-pcyc.git
 pip3 install -r requirements.txt
 ```
 ### Train
 
-```
+```bash
 python3 src/train.py --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
 ```
 ### Test
-```
+```bash
 python3 src/train.py --test --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
 ```
 ## Pre-trained Models
 
-#### Pre-trained Models (SEM-PCYC)
+#### SEM-PCYC
 
-* Sketchy:
-
-* TU-Berlin:
-
+* Sketchy:  
+* TU-Berlin:  
 * QuickDraw:
 
-#### Pre-trained CNNs
+#### CNNs
 
 * Sketchy:
     * sketch:
