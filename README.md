@@ -1,22 +1,25 @@
 # SEM-PCYC
 
+[PyTorch](https://pytorch.org/) | [Arxiv](https://arxiv.org/abs/1903.03372)
+
 <p align="center">
 <img src="./figures/sem-pcyc.png" width="800">
 </p>
 
-#### This is the repository for generating some key results of our CVPR 2019 paper:
+PyTorch implementation for generating some key results of our SEM-PCYC paper on zero-shot sketch-based image retrieval:  
+[Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval](https://arxiv.org/abs/1903.03372)  
+[Anjan Dutta](https://sites.google.com/site/2adutta/), [Zeynep Akata](https://ivi.fnwi.uva.nl/uvaboschdeltalab/people/zeynep-akata/)  
+[CVPR, 2019](http://cvpr2019.thecvf.com/)
 
-**Anjan Dutta and Zeynep Akata. Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval, CVPR, 2019**
-
-#### Zero-Shot Sketch-based Image Retrieval Demo:
+## Demo Video
 
 <p align="center">
 <img src="./figures/sem-pcyc-demo.gif" width="500">
 </p>
 
-#### Zero-Shot Sketch-based Image Retrieval Results:
+## Retrieval Results
 
-* Sketchy:   
+#### Sketchy  
 
 <p align="center">
 <img src="./figures/qual_results/sketchy/3/pear.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/1_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/2_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/3_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/4_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/5_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/6_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/7_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/8_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/9_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/10_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/11_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/12_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/13_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/14_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/15_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/16_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/17_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/18_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/19_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/3/20_1.png" width="4.3%"><br>
@@ -26,7 +29,7 @@
 <img src="./figures/qual_results/sketchy/27/guitar.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/1_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/2_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/3_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/4_0.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/5_0.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/6_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/7_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/8_0.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/9_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/10_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/11_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/12_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/13_0.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/14_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/15_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/16_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/17_0.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/18_0.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/19_1.png" width="4.3%"> <img src="./figures/qual_results/sketchy/27/20_1.png" width="4.3%"><br>
 </p>
 
-* TU-Berlin:
+#### TU-Berlin
         
 <p align="center">
 <img src="./figures/qual_results/tu-berlin/1/dolphin.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/1_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/2_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/3_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/4_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/5_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/6_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/7_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/8_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/9_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/10_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/11_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/12_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/13_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/14_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/15_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/16_0.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/17_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/18_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/19_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/1/20_1.png" width="4.3%"><br>
@@ -36,29 +39,51 @@
 <img src="./figures/qual_results/tu-berlin/9/hedgehog.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/1_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/2_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/3_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/4_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/5_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/6_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/7_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/8_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/9_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/10_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/11_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/12_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/13_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/14_0.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/15_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/16_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/17_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/18_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/19_0.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/20_1.png" width="4.3%"><br>
 </p>
 
+#### QuickDraw
+
+## Getting Started
+
+### Installation
+```
+git clone https://github.com/AnjanDutta/sem-pcyc.git
+pip3 install -r requirements.txt
+```
+### Train
+
+```
+python3 src/train.py --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
+```
+### Test
+```
+python3 src/train.py --test --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
+```
+## Pre-trained Models
+
+#### Pre-trained Models (SEM-PCYC)
+
+* Sketchy:
+
+* TU-Berlin:
+
+* QuickDraw:
+
 #### Pre-trained CNNs
 
 * Sketchy:
-
+    * sketch:
+    * image:
 * TU-Berlin:
-
+    * sketch:
+    * image:
 * QuickDraw:
-
-#### Pre-trained Models
-
-* Sketchy:
-
-* TU-Berlin:
-
-* QuickDraw:
+    * sketch:
+    * image:
 
 #### Semantic Embeddings
 
 * Sketchy:
-
 * TU-Berlin:
-
 * QuickDraw:
 
-##### Author
+## Author
 * [Anjan Dutta](https://sites.google.com/site/2adutta/) ([@AnjanDutta](https://github.com/AnjanDutta))
