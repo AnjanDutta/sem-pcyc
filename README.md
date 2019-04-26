@@ -4,17 +4,17 @@
 <img src="./figures/sem-pcyc.png" width="800">
 </p>
 
-* This is the repository for generating some key results of our CVPR 2019 paper:
+#### This is the repository for generating some key results of our CVPR 2019 paper:
 
 **Anjan Dutta and Zeynep Akata. Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval, CVPR, 2019**
 
-* Zero-Shot Sketch-based Image Retrieval Demo:
+#### Zero-Shot Sketch-based Image Retrieval Demo:
 
 <p align="center">
 <img src="./figures/sem-pcyc-demo.gif" width="500">
 </p>
 
-* Zero-Shot Sketch-based Image Retrieval Results:
+#### Zero-Shot Sketch-based Image Retrieval Results:
 
 * Sketchy:   
 
@@ -36,7 +36,29 @@
 <img src="./figures/qual_results/tu-berlin/9/hedgehog.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/1_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/2_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/3_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/4_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/5_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/6_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/7_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/8_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/9_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/10_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/11_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/12_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/13_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/14_0.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/15_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/16_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/17_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/18_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/19_0.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/20_1.png" width="4.3%"><br>
 </p>
 
-### Pre-trained Models
+#### Pre-trained CNNs
 
-### Author
+* Sketchy:
+
+* TU-Berlin:
+
+* QuickDraw:
+
+#### Pre-trained Models
+
+* Sketchy:
+
+* TU-Berlin:
+
+* QuickDraw:
+
+#### Semantic Embeddings
+
+* Sketchy:
+
+* TU-Berlin:
+
+* QuickDraw:
+
+##### Author
 * [Anjan Dutta](https://sites.google.com/site/2adutta/) ([@AnjanDutta](https://github.com/AnjanDutta))
