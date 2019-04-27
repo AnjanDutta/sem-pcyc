@@ -18,14 +18,22 @@ if [ ! -d $path_dataset ]; then
   mkdir $path_dataset
 fi
 ############################################# download the Sketchy dataset #############################################
+echo "Downloading the Sketchy dataset (it will take some time)"
 python3 src/download_gdrive.py 0B7ISyeE8QtDdTjE1MG9Gcy1kSkE $path_dataset/Sketchy.7z
-7z $path_dataset/Sketchy.7z
-
+7z x $path_dataset/Sketchy.7z
+mv $path_dataset/256x256 $path_dataset/Sketchy
+echo "Downloading the extended photos of Sketchy dataset (it will take some time)"
 python3 src/download_gdrive.py 0B2U-hnwRkpRrdGZKTzkwbkEwVkk $path_dataset/Sketchy/extended_photo.zip
+echo "Unzipping it"
 unzip $path_dataset/Sketchy/extended_photo.zip
-
 ############################################ download the TU-Berlin dataset ############################################
 mkdir $path_dataset/TU-Berlin
+echo "Downloading the sketches of TU-Berlin dataset (it will take some time)"
 wget http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/sketches_png.zip -O $path_dataset/TU-Berlin/sketches.zip
-
-# download the QuickDraw dataset
+echo "Unzipping it"
+unzip $path_dataset/TU-Berlin/sketches.zip
+echo "Downloading the images of TU-Berlin dataset (it will take some time)"
+python3 src/download_gdrive.py 0B2U-hnwRkpRrMFVvTmFQa3dmSUk $path_dataset/TU-Berlin/images.zip
+echo "Unzipping it"
+unzip $path_dataset/TU-Berlin/images.zip
+############################################ download the QuickDraw dataset ############################################
