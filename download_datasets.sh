@@ -22,6 +22,7 @@ echo "Downloading the Sketchy dataset (it will take some time)"
 python3 src/download_gdrive.py 0B7ISyeE8QtDdTjE1MG9Gcy1kSkE $path_dataset/Sketchy.7z
 7z x $path_dataset/Sketchy.7z -o$path_dataset
 rm $path_dataset/Sketchy.7z
+rm README.txt
 mv $path_dataset/256x256 $path_dataset/Sketchy
 echo "Downloading the extended photos of Sketchy dataset (it will take some time)"
 python3 src/download_gdrive.py 0B2U-hnwRkpRrdGZKTzkwbkEwVkk $path_dataset/Sketchy/extended_photo.zip
@@ -59,3 +60,5 @@ wget http://datasets.cvc.uab.es/QuickDraw/QuickDraw_images_final.zip -O $path_da
 unzip $path_dataset/QuickDraw/QuickDraw_images_final.zip -d $path_dataset/QuickDraw
 rm $path_dataset/QuickDraw/QuickDraw_images_final.zip
 mv $path_dataset/QuickDraw/QuickDraw_images_final $path_dataset/QuickDraw/QuickDraw_images
+
+chmod 755 -R $path_dataset
