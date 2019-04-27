@@ -37,20 +37,23 @@ echo "Downloading the sketches of TU-Berlin dataset (it will take some time)"
 wget http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/sketches_png.zip -O $path_dataset/TU-Berlin/sketches.zip
 echo "Unzipping it"
 unzip $path_dataset/TU-Berlin/sketches.zip -d $path_dataset/TU-Berlin
+rm $path_dataset/TU-Berlin/sketches.zip
 mv $path_dataset/TU-Berlin/png $path_dataset/TU-Berlin/sketches
 echo "Downloading the images of TU-Berlin dataset (it will take some time)"
 python3 src/download_gdrive.py 0B2U-hnwRkpRrMFVvTmFQa3dmSUk $path_dataset/TU-Berlin/images.zip
 echo "Unzipping it"
-unzip $path_dataset/TU-Berlin/images.zip
+unzip $path_dataset/TU-Berlin/images.zip -d $path_dataset/TU-Berlin
+rm $path_dataset/TU-Berlin/images.zip
+mv $path_dataset/TU-Berlin/ImageResized $path_dataset/TU-Berlin/images
 ############################################ download the QuickDraw dataset ############################################
 if [ ! -d $path_dataset/QuickDraw ]; then
   mkdir $path_dataset/QuickDraw
 fi
 echo "Downloading the sketches of QuickDraw dataset (it will take some time)"
-wget http://datasets.cvc.uab.es/QuickDraw/QuickDraw_sketches_final.zip $path_dataset/QuickDraw/QuickDraw_sketches_final.zip
-unzip $path_dataset/QuickDraw/QuickDraw_sketches_final.zip
+wget http://datasets.cvc.uab.es/QuickDraw/QuickDraw_sketches_final.zip -O $path_dataset/QuickDraw/QuickDraw_sketches_final.zip
+unzip $path_dataset/QuickDraw/QuickDraw_sketches_final.zip -d $path_dataset/QuickDraw
 mv $path_dataset/QuickDraw/QuickDraw_sketches_final $path_dataset/QuickDraw/sketches
 echo "Downloading the images of QuickDraw dataset (it will take some time)"
-wget http://datasets.cvc.uab.es/QuickDraw/QuickDraw_images_final.zip $path_dataset/QuickDraw/QuickDraw_images_final.zip
-unzip $path_dataset/QuickDraw/QuickDraw_images_final.zip
+wget http://datasets.cvc.uab.es/QuickDraw/QuickDraw_images_final.zip -O $path_dataset/QuickDraw/QuickDraw_images_final.zip
+unzip $path_dataset/QuickDraw/QuickDraw_images_final.zip -d $path_dataset/QuickDraw
 mv $path_dataset/QuickDraw/QuickDraw_images_final $path_dataset/QuickDraw/QuickDraw_images
