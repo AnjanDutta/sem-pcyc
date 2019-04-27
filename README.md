@@ -44,12 +44,34 @@ PyTorch implementation of our SEM-PCYC model for zero-shot sketch-based image re
 ## Getting Started
 
 ### Installation
+* Clone this repository
 ```bash
 git clone https://github.com/AnjanDutta/sem-pcyc.git
+cd sem-pcyc
+```
+* Install the requirements
+```bash
 pip3 install -r requirements.txt
 ```
+* Update [config.ini](https://github.com/AnjanDutta/sem-pcyc/blob/master/config.ini)
+```bash
+[<host>]
+path_dataset = <where all the datasets will be downloaded>
+path_aux = <where all the auxiliary folders and files will be saved>
+```
+### Get semantic embeddings
+```bash
+```
+### Get pre-trained sketch and image models
+```bash
+```
+### Get a pre-trained model
+```bash
+```
+### Download datasets and pre-process
+```bash
+```
 ### Train
-
 ```bash
 python3 src/train.py --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
 ```

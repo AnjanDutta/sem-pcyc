@@ -1,6 +1,7 @@
 re==2.2.1
 nltk==3.3
 PIL==5.3.0
+tqdm==4.31.1
 scipy==1.1.0
 torch==1.0.1
 numpy==1.14.0
