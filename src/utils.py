@@ -344,14 +344,14 @@ def prec(actual, predicted, k):
     if k is not None:
         pr = len(act_set & pred_set) / min(k, len(pred_set))
     else:
-        pr = len(act_set & pred_set) / len(pred_set)
+        pr = len(act_set & pred_set) / max(len(pred_set), 1)
     return pr
 
 
 def rec(actual, predicted, k):
     act_set = set(actual)
     pred_set = set(predicted[:k])
-    re = len(act_set & pred_set) / len(act_set)
+    re = len(act_set & pred_set) / max(len(act_set), 1)
     return re
 
 
