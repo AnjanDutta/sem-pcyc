@@ -11,6 +11,16 @@ PyTorch implementation of our SEM-PCYC model for zero-shot sketch-based image re
 [Anjan Dutta](https://sites.google.com/site/2adutta/), [Zeynep Akata](https://ivi.fnwi.uva.nl/uvaboschdeltalab/people/zeynep-akata/)  
 [CVPR, 2019](http://cvpr2019.thecvf.com/)
 
+Bibtex:
+```angularjs
+@inproceedings{Dutta2019SEMPCYC,
+author = {Anjan Dutta and Zeynep Akata},
+title = {Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval},
+booktitle = {CVPR},
+year = {2019},
+}
+```
+
 ## Demo Video
 
 <p align="center">
