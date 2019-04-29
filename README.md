@@ -41,6 +41,14 @@ PyTorch implementation of our SEM-PCYC model for zero-shot sketch-based image re
 
 #### QuickDraw
 
+## Prerequisites
+
+* Linux (tested on Ubuntu 16.04)
+* NVIDIA GPU + CUDA CuDNN
+* 7z 
+```
+sudo apt-get install p7zip-full
+```
 ## Getting Started
 
 ### Installation
@@ -59,16 +67,17 @@ pip3 install -r requirements.txt
 path_dataset = <where all the datasets will be downloaded>
 path_aux = <where all the auxiliary folders and files will be saved>
 ```
+### Download datasets and pre-process
+```bash
+bash download_datasets.sh
+```
 ### Get semantic embeddings
 ```bash
 ```
 ### Get pre-trained sketch and image models
 ```bash
 ```
-### Get a pre-trained model
-```bash
-```
-### Download datasets and pre-process
+### Get a pre-trained SEM-PCYC model
 ```bash
 ```
 ### Train
@@ -79,31 +88,5 @@ python3 src/train.py --dataset Sketchy --dim-out 64 --semantic-models word2vec-g
 ```bash
 python3 src/train.py --test --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
 ```
-## Pre-trained Models
-
-#### SEM-PCYC
-
-* Sketchy:  
-* TU-Berlin:  
-* QuickDraw:
-
-#### CNNs
-
-* Sketchy:
-    * sketch:
-    * image:
-* TU-Berlin:
-    * sketch:
-    * image:
-* QuickDraw:
-    * sketch:
-    * image:
-
-#### Semantic Embeddings
-
-* Sketchy:
-* TU-Berlin:
-* QuickDraw:
-
 ## Author
 * [Anjan Dutta](https://sites.google.com/site/2adutta/) ([@AnjanDutta](https://github.com/AnjanDutta))

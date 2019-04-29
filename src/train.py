@@ -138,7 +138,7 @@ def main():
     te_fls_im = va_fls_im + te_fls_im
     te_clss_im = va_clss_im + te_clss_im
 
-    if args.gzs_sbir > 0:
+    if args.gzs_sbir:
         tot_len = len(tr_fls_im)
         idx = np.random.choice(np.arange(tot_len), int(args.gzs_sbir * tot_len), replace=False).tolist()
         va_fls_sk = [tr_fls_sk[id] for id in idx] + te_fls_sk
