@@ -147,7 +147,7 @@ def main():
         te_fls_sk = [tr_fls_sk[i] for i in idx_sk] + te_fls_sk
         te_clss_sk = [tr_clss_sk[i] for i in idx_sk] + te_clss_sk
         te_fls_im = [tr_fls_im[i] for i in idx_im] + te_fls_im
-        te_clss_im = [tr_clss_im[i] for i in idxIm] + te_clss_im
+        te_clss_im = [tr_clss_im[i] for i in idx_im] + te_clss_im
 
     # class dictionary
     dict_clss = utils.create_dict_texts(tr_clss_im)
