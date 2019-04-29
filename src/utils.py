@@ -376,9 +376,9 @@ def apsak(sim, str_sim, k=None):
     idx = (-sim).argsort()[:, :k]
     sim_k = np.array([sim[i, id] for i, id in enumerate(idx)])
     str_sim_k = np.array([str_sim[i, id] for i, id in enumerate(idx)])
+    # idx_z = np.where(str_sim_k.sum(axis=1) == 0)
+    # sim_k = np.delete(sim_k, idx_z, axis=0)
+    # str_sim_k = np.delete(str_sim_k, idx_z, axis=0)
+    aps_ = aps(sim_k, str_sim_k)
 
-    idx = np.where(str_sim_k.sum(axis=1) == 0)
-    sim_k = np.delete(sim_k, idx, axis=0)
-    str_sim_k = np.delete(str_sim_k, idx, axis=0)
-
-    return aps(sim_k, str_sim_k)
+    return aps_
