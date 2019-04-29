@@ -141,7 +141,7 @@ def main():
     if args.gzs_sbir:
         _, idx_sk = np.unique([f.split('-')[0] for f in tr_fls_sk], return_index=True)
         _, idx_im = np.unique(tr_fls_im, return_index=True)
-        min_idx = min(idx_sk.shape[0], idx_im.shape[0])
+        min_idx = min(min(idx_sk.shape[0], idx_im.shape[0]), 10000)
         idx_sk = np.random.choice(idx_sk, min_idx, replace=False)
         idx_im = np.random.choice(idx_im, min_idx, replace=False)
         te_fls_sk = [tr_fls_sk[i] for i in idx_sk] + te_fls_sk
