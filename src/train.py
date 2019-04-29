@@ -139,12 +139,12 @@ def main():
     te_clss_im = va_clss_im + te_clss_im
 
     if args.gzs_sbir:
-        tot_len = len(tr_fls_im)
-        idx = np.random.choice(np.arange(tot_len), int(args.gzs_sbir * tot_len), replace=False).tolist()
-        te_fls_sk = [tr_fls_sk[id] for id in idx] + te_fls_sk
-        te_clss_sk = [tr_clss_sk[id] for id in idx] + te_clss_sk
-        te_fls_im = [tr_fls_im[id] for id in idx] + te_fls_im
-        te_clss_im = [tr_clss_im[id] for id in idx] + te_clss_im
+        _, idx = np.unique([f.split('-')[0] for f in tr_fls_sk], return_index=True)
+        te_fls_sk = [tr_fls_sk[i] for i in idx] + te_fls_sk
+        te_clss_sk = [tr_clss_sk[i] for i in idx] + te_clss_sk
+        _, idx = np.unique(tr_fls_im, return_index=True)
+        te_fls_im = [tr_fls_im[i] for i in idx] + te_fls_im
+        te_clss_im = [tr_clss_im[i] for i in idx] + te_clss_im
 
     # class dictionary
     dict_clss = utils.create_dict_texts(tr_clss_im)

@@ -25,7 +25,7 @@ class Options:
         parser.add_argument('--fine-grained', action='store_true', default=False,
                             help='Fine grained zero-shot sketch based image retrieval')
         # Semantic models
-        parser.add_argument('--semantic-models', nargs='+', default=['word2vec-google-news-300', 'hieremb-path-354'],
+        parser.add_argument('--semantic-models', nargs='+', default=['word2vec-google-news', 'hieremb-path'],
                             type=str, help='Semantic model')
         # Weight (on loss) parameters
         parser.add_argument('--lambda-se', default=10.0, type=float, help='Weight on the semantic model')
