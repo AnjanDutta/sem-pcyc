@@ -139,12 +139,15 @@ def main():
     te_clss_im = va_clss_im + te_clss_im
 
     if args.gzs_sbir:
-        _, idx = np.unique([f.split('-')[0] for f in tr_fls_sk], return_index=True)
-        te_fls_sk = [tr_fls_sk[i] for i in idx] + te_fls_sk
-        te_clss_sk = [tr_clss_sk[i] for i in idx] + te_clss_sk
-        _, idx = np.unique(tr_fls_im, return_index=True)
-        te_fls_im = [tr_fls_im[i] for i in idx] + te_fls_im
-        te_clss_im = [tr_clss_im[i] for i in idx] + te_clss_im
+        _, idx_sk = np.unique([f.split('-')[0] for f in tr_fls_sk], return_index=True)
+        _, idx_im = np.unique(tr_fls_im, return_index=True)
+        min_idx = min(idx_sk.shape[0], idx_im.shape[0])
+        idx_sk = np.random.choice(idx_sk, min_idx, replace=False)
+        idx_im = np.random.choice(idx_im, min_idx, replace=False)
+        te_fls_sk = [tr_fls_sk[i] for i in idx_sk] + te_fls_sk
+        te_clss_sk = [tr_clss_sk[i] for i in idx_sk] + te_clss_sk
+        te_fls_im = [tr_fls_im[i] for i in idx_im] + te_fls_im
+        te_clss_im = [tr_clss_im[i] for i in idxIm] + te_clss_im
 
     # class dictionary
     dict_clss = utils.create_dict_texts(tr_clss_im)
