@@ -52,6 +52,8 @@ def main():
     model_name = '+'.join(args.semantic_models)
     root_path = os.path.join(path_dataset, args.dataset)
     str_aux = ''
+    if args.fine_grained:
+        str_aux = str_aux + 'fine-grained'
     if args.split_eccv_2018:
         str_aux = 'split_eccv_2018'
     path_sketch_model = os.path.join(path_aux, 'CheckPoints', 'sketch', args.dataset, 'vanilla')
