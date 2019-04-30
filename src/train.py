@@ -34,7 +34,7 @@ def main():
     print('Parameters:\t' + str(args))
 
     if args.fine_grained:
-        assert args.dataset == 'Sketchy'
+        assert args.dataset.split('_')[0] == 'Sketchy'
 
     # Read the config file and
     config = utils.read_config()
