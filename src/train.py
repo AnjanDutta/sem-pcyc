@@ -162,7 +162,7 @@ def main():
             te_clss_sk = [te_clss_sk[i] for i in idx_sk]
         if len(te_fls_im) > num_im:
             np.random.seed(1234)
-            idx_im = np.sort(np.random.choice(len(te_fls_im), num_sk, replace=False))
+            idx_im = np.sort(np.random.choice(len(te_fls_im), num_im, replace=False))
             te_fls_im = [te_fls_im[i] for i in idx_im]
             te_clss_im = [te_clss_im[i] for i in idx_im]
 
