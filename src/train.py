@@ -139,18 +139,28 @@ def main():
     te_clss_im = va_clss_im + te_clss_im
 
     if args.gzs_sbir:
-        num_te_sk = len(te_fls_sk)
-        num_te_im = len(te_fls_im)
-        te_fls_sk = tr_fls_sk + te_fls_sk
-        te_clss_sk = tr_clss_sk + te_clss_sk
-        te_fls_im = tr_fls_im + te_fls_im
-        te_clss_im = tr_clss_im + te_clss_im
-        idx_sk = np.sort(np.random.choice(len(te_fls_sk), num_te_sk, replace=False))
-        idx_im = np.sort(np.random.choice(len(te_fls_im), num_te_im, replace=False))
-        te_fls_sk = [te_fls_sk[i] for i in idx_sk]
-        te_clss_sk = [te_clss_sk[i] for i in idx_sk]
-        te_fls_im = [te_fls_im[i] for i in idx_im]
-        te_clss_im = [te_clss_im[i] for i in idx_im]
+        _, idx_sk = np.unique(tr_fls_sk, return_index=True)
+        tr_fls_sk_ = [tr_fls_sk[i] for i in idx_sk]
+        tr_clss_sk_ = [tr_clss_sk[i] for i in idx_sk]
+        _, idx_im = np.unique(tr_fls_im, return_index=True)
+        tr_fls_im_ = [tr_fls_im[i] for i in idx_im]
+        tr_clss_im_ = [tr_clss_im[i] for i in idx_im]
+        if args.dataset == 'Sketchy':
+            _, idx_sk = np.unique([f.split('-')[0] for f in tr_fls_sk_], return_index=True)
+            tr_fls_sk_ = [tr_fls_sk_[i] for i in idx_sk]
+            tr_clss_sk_ = [tr_clss_sk_[i] for i in idx_sk]
+        te_fls_sk = tr_fls_sk_ + te_fls_sk
+        te_clss_sk = tr_clss_sk_ + te_clss_sk
+        te_fls_im = tr_fls_im_ + te_fls_im
+        te_clss_im = tr_clss_im_ + te_clss_im
+        if len(te_fls_sk) > 10000:
+            idx_sk = np.sort(np.random.choice(len(te_fls_sk), 10000, replace=False))
+            te_fls_sk = [te_fls_sk[i] for i in idx_sk]
+            te_clss_sk = [te_clss_sk[i] for i in idx_sk]
+        if len(te_fls_im) > 25000:
+            idx_im = np.sort(np.random.choice(len(te_fls_im), 25000, replace=False))
+            te_fls_im = [te_fls_im[i] for i in idx_im]
+            te_clss_im = [te_clss_im[i] for i in idx_im]
 
     # class dictionary
     dict_clss = utils.create_dict_texts(tr_clss_im)
