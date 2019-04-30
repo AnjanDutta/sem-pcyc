@@ -14,7 +14,7 @@ parse_section()
   done
 }
 path_dataset=$(parse_section $HOSTNAME path_dataset < ./config.ini)
-if [ ! -d $path_dataset ]; then
+if [[ ! -d $path_dataset ]]; then
   mkdir $path_dataset
 fi
 ############################################# download the Sketchy dataset #############################################
@@ -31,7 +31,7 @@ unzip $path_dataset/Sketchy/extended_photo.zip -d $path_dataset/Sketchy
 rm $path_dataset/Sketchy/extended_photo.zip
 mv $path_dataset/Sketchy/EXTEND_image_sketchy $path_dataset/Sketchy/extended_photo
 ############################################ download the TU-Berlin dataset ############################################
-if [ ! -d $path_dataset/TU-Berlin ]; then
+if [[ ! -d $path_dataset/TU-Berlin ]]; then
   mkdir $path_dataset/TU-Berlin
 fi
 echo "Downloading the sketches of TU-Berlin dataset (it will take some time)"
@@ -46,8 +46,8 @@ echo "Unzipping it"
 unzip $path_dataset/TU-Berlin/images.zip -d $path_dataset/TU-Berlin
 rm $path_dataset/TU-Berlin/images.zip
 mv $path_dataset/TU-Berlin/ImageResized $path_dataset/TU-Berlin/images
-############################################ download the QuickDraw dataset ############################################
-if [ ! -d $path_dataset/QuickDraw ]; then
+########################################### download the QuickDraw dataset #############################################
+if [[ ! -d $path_dataset/QuickDraw ]]; then
   mkdir $path_dataset/QuickDraw
 fi
 echo "Downloading the sketches of QuickDraw dataset (it will take some time)"
