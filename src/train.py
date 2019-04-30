@@ -139,6 +139,8 @@ def main():
     te_clss_im = va_clss_im + te_clss_im
 
     if args.gzs_sbir:
+        num_sk = int(1.2 * len(te_fls_sk))
+        num_im = int(1.5 * len(te_fls_im))
         _, idx_sk = np.unique(tr_fls_sk, return_index=True)
         tr_fls_sk_ = [tr_fls_sk[i] for i in idx_sk]
         tr_clss_sk_ = [tr_clss_sk[i] for i in idx_sk]
@@ -153,14 +155,14 @@ def main():
         te_clss_sk = tr_clss_sk_ + te_clss_sk
         te_fls_im = tr_fls_im_ + te_fls_im
         te_clss_im = tr_clss_im_ + te_clss_im
-        if len(te_fls_sk) > 10000:
+        if len(te_fls_sk) > num_sk:
             np.random.seed(1234)
-            idx_sk = np.sort(np.random.choice(len(te_fls_sk), 10000, replace=False))
+            idx_sk = np.sort(np.random.choice(len(te_fls_sk), num_sk, replace=False))
             te_fls_sk = [te_fls_sk[i] for i in idx_sk]
             te_clss_sk = [te_clss_sk[i] for i in idx_sk]
-        if len(te_fls_im) > 25000:
+        if len(te_fls_im) > num_im:
             np.random.seed(1234)
-            idx_im = np.sort(np.random.choice(len(te_fls_im), 25000, replace=False))
+            idx_im = np.sort(np.random.choice(len(te_fls_im), num_sk, replace=False))
             te_fls_im = [te_fls_im[i] for i in idx_im]
             te_clss_im = [te_clss_im[i] for i in idx_im]
 
