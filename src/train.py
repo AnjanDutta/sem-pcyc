@@ -140,7 +140,7 @@ def main():
 
     if args.gzs_sbir:
         num_sk = int(1.2 * len(te_fls_sk))
-        num_im = int(1.5 * len(te_fls_im))
+        num_im = int(1.2 * len(te_fls_im))
         _, idx_sk = np.unique(tr_fls_sk, return_index=True)
         tr_fls_sk_ = [tr_fls_sk[i] for i in idx_sk]
         tr_clss_sk_ = [tr_clss_sk[i] for i in idx_sk]
