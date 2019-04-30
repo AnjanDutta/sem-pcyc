@@ -379,6 +379,6 @@ def apsak(sim, str_sim, k=None):
     idx_nz = np.where(str_sim_k.sum(axis=1) != 0)[0]
     sim_k = sim_k[idx_nz]
     str_sim_k = str_sim_k[idx_nz]
-    aps_ = np.zeros((sim.shape[0], 1), dtype=np.float)
+    aps_ = np.zeros((sim.shape[0]), dtype=np.float)
     aps_[idx_nz] = aps(sim_k, str_sim_k)
     return aps_
