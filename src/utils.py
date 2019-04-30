@@ -373,15 +373,12 @@ def aps(sim, str_sim):
 
 
 def apsak(sim, str_sim, k=None):
-    import pdb; pdb.set_trace()
     idx = (-sim).argsort()[:, :k]
     sim_k = np.array([sim[i, id] for i, id in enumerate(idx)])
     str_sim_k = np.array([str_sim[i, id] for i, id in enumerate(idx)])
-    idx_nz = np.where(str_sim_k.sum(axis=1) != 0)
+    idx_nz = np.where(str_sim_k.sum(axis=1) != 0)[0]
     sim_k = sim_k[idx_nz]
     str_sim_k = str_sim_k[idx_nz]
-    # sim_k = np.delete(sim_k, idx_z, axis=0)
-    # str_sim_k = np.delete(str_sim_k, idx_z, axis=0)
     aps_ = np.zeros((sim.shape[0], 1), dtype=np.float)
     aps_[idx_nz] = aps(sim_k, str_sim_k)
     return aps_
