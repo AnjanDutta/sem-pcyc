@@ -149,90 +149,25 @@ def load_files_sketchy_zeroshot(root_path, split_eccv_2018=False, photo_dir='pho
     va_idx_im, va_idx_sk = get_classwise_samples(va_classes, fls_im, fls_sk, set_type='valid')
     te_idx_im, te_idx_sk = get_classwise_samples(te_classes, fls_im, fls_sk, set_type='test')
 
-    tr_fls_sk = [fls_sk[i] for i in tr_idx_sk]
-    va_fls_sk = [fls_sk[i] for i in va_idx_sk]
-    te_fls_sk = [fls_sk[i] for i in te_idx_sk]
+    splits = dict()
 
-    tr_clss_sk = [clss_sk[i] for i in tr_idx_sk]
-    va_clss_sk = [clss_sk[i] for i in va_idx_sk]
-    te_clss_sk = [clss_sk[i] for i in te_idx_sk]
+    splits['tr_fls_sk'] = [fls_sk[i] for i in tr_idx_sk]
+    splits['va_fls_sk'] = [fls_sk[i] for i in va_idx_sk]
+    splits['te_fls_sk'] = [fls_sk[i] for i in te_idx_sk]
 
-    tr_fls_im = [fls_im[i] for i in tr_idx_im]
-    va_fls_im = [fls_im[i] for i in va_idx_im]
-    te_fls_im = [fls_im[i] for i in te_idx_im]
+    splits['tr_clss_sk'] = [clss_sk[i] for i in tr_idx_sk]
+    splits['va_clss_sk'] = [clss_sk[i] for i in va_idx_sk]
+    splits['te_clss_sk'] = [clss_sk[i] for i in te_idx_sk]
 
-    tr_clss_im = [clss_im[i] for i in tr_idx_im]
-    va_clss_im = [clss_im[i] for i in va_idx_im]
-    te_clss_im = [clss_im[i] for i in te_idx_im]
+    splits['tr_fls_im'] = [fls_im[i] for i in tr_idx_im]
+    splits['va_fls_im'] = [fls_im[i] for i in va_idx_im]
+    splits['te_fls_im'] = [fls_im[i] for i in te_idx_im]
 
-    return tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im,\
-        va_fls_sk, va_clss_sk, va_fls_im, va_clss_im,\
-        te_fls_sk, te_clss_sk, te_fls_im, te_clss_im
+    splits['tr_clss_im'] = [clss_im[i] for i in tr_idx_im]
+    splits['va_clss_im'] = [clss_im[i] for i in va_idx_im]
+    splits['te_clss_im'] = [clss_im[i] for i in te_idx_im]
 
-
-def load_files_sketchy_finegrained_zeroshot(root_path, split_eccv_2018=False, photo_dir='photo', sketch_dir='sketch',
-                                            photo_sd='', sketch_sd='tx_000000000000'):
-
-    path_im = os.path.join(root_path, photo_dir, photo_sd)
-    path_sk = os.path.join(root_path, sketch_dir, sketch_sd)
-
-    # image files and classes
-    fls_im = glob.glob(os.path.join(path_im, '*', '*.jpg'))
-    fls_im = [os.path.join(f.split('/')[-2], f.split('/')[-1]) for f in fls_im]
-    clss_im = [f.split('/')[-2] for f in fls_im]
-
-    # all the unique classes
-    classes = np.unique(clss_im)
-
-    # divide the classes
-    if split_eccv_2018:
-        cur_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-        with open(os.path.join(cur_path, "test_classes_eccv_2018.txt")) as fp:
-            te_classes = fp.read().splitlines()
-            va_classes = te_classes
-            tr_classes = [x for x in classes if x not in te_classes and x not in va_classes]
-    else:
-        tr_classes = np.random.choice(classes, int(0.8 * len(classes)), replace=False).tolist()
-        va_classes = np.random.choice([x for x in classes if x not in tr_classes], int(0.1 * len(classes)),
-                                      replace=False).tolist()
-        te_classes = [x for x in classes if x not in tr_classes and x not in va_classes]
-
-    # sketch files and classes
-    fls_sk = glob.glob(os.path.join(path_sk, '*', '*.png'))
-    fls_sk = [os.path.join(f.split('/')[-2], f.split('/')[-1]) for f in fls_sk]
-    clss_sk = [f.split('/')[-2] for f in fls_sk]
-
-    tr_idx_im, tr_idx_sk = get_finegrained_samples(tr_classes, fls_im, fls_sk, set_type='train')
-    va_idx_im, va_idx_sk = get_finegrained_samples(va_classes, fls_im, fls_sk, set_type='valid')
-    te_idx_im, te_idx_sk = get_finegrained_samples(te_classes, fls_im, fls_sk, set_type='test')
-
-    tr_fls_sk = [fls_sk[i] for i in tr_idx_sk]
-    va_fls_sk = [fls_sk[i] for i in va_idx_sk]
-    te_fls_sk = [fls_sk[i] for i in te_idx_sk]
-
-    tr_cfs_sk = [fls_sk[i].split('-')[0] for i in tr_idx_sk]
-    va_cfs_sk = [fls_sk[i].split('-')[0] for i in va_idx_sk]
-    te_cfs_sk = [fls_sk[i].split('-')[0] for i in te_idx_sk]
-
-    tr_clss_sk = [clss_sk[i] for i in tr_idx_sk]
-    va_clss_sk = [clss_sk[i] for i in va_idx_sk]
-    te_clss_sk = [clss_sk[i] for i in te_idx_sk]
-
-    tr_fls_im = [fls_im[i] for i in tr_idx_im]
-    va_fls_im = [fls_im[i] for i in va_idx_im]
-    te_fls_im = [fls_im[i] for i in te_idx_im]
-
-    tr_cfs_im = [fls_im[i].split('.')[0] for i in tr_idx_im]
-    va_cfs_im = [fls_im[i].split('.')[0] for i in va_idx_im]
-    te_cfs_im = [fls_im[i].split('.')[0] for i in te_idx_im]
-
-    tr_clss_im = [clss_im[i] for i in tr_idx_im]
-    va_clss_im = [clss_im[i] for i in va_idx_im]
-    te_clss_im = [clss_im[i] for i in te_idx_im]
-
-    return tr_fls_sk, tr_cfs_sk, tr_clss_sk, tr_fls_im, tr_cfs_im, tr_clss_im,\
-        va_fls_sk, va_cfs_sk, va_clss_sk, va_fls_im, va_cfs_im, va_clss_im,\
-        te_fls_sk, te_cfs_sk, te_clss_sk, te_fls_im, te_cfs_im, te_clss_im
+    return splits
 
 
 def load_files_tuberlin_zeroshot(root_path, photo_dir='images', sketch_dir='sketches', photo_sd='', sketch_sd=''):
@@ -263,79 +198,25 @@ def load_files_tuberlin_zeroshot(root_path, photo_dir='images', sketch_dir='sket
     va_idx_im, va_idx_sk = get_classwise_samples(va_classes, fls_im, fls_sk, set_type='valid')
     te_idx_im, te_idx_sk = get_classwise_samples(te_classes, fls_im, fls_sk, set_type='test')
 
-    tr_fls_sk = [fls_sk[i] for i in tr_idx_sk]
-    va_fls_sk = [fls_sk[i] for i in va_idx_sk]
-    te_fls_sk = [fls_sk[i] for i in te_idx_sk]
+    splits = dict()
 
-    tr_clss_sk = [clss_sk[i] for i in tr_idx_sk]
-    va_clss_sk = [clss_sk[i] for i in va_idx_sk]
-    te_clss_sk = [clss_sk[i] for i in te_idx_sk]
+    splits['tr_fls_sk'] = [fls_sk[i] for i in tr_idx_sk]
+    splits['va_fls_sk'] = [fls_sk[i] for i in va_idx_sk]
+    splits['te_fls_sk'] = [fls_sk[i] for i in te_idx_sk]
 
-    tr_fls_im = [fls_im[i] for i in tr_idx_im]
-    va_fls_im = [fls_im[i] for i in va_idx_im]
-    te_fls_im = [fls_im[i] for i in te_idx_im]
+    splits['tr_clss_sk'] = [clss_sk[i] for i in tr_idx_sk]
+    splits['va_clss_sk'] = [clss_sk[i] for i in va_idx_sk]
+    splits['te_clss_sk'] = [clss_sk[i] for i in te_idx_sk]
 
-    tr_clss_im = [clss_im[i] for i in tr_idx_im]
-    va_clss_im = [clss_im[i] for i in va_idx_im]
-    te_clss_im = [clss_im[i] for i in te_idx_im]
+    splits['tr_fls_im'] = [fls_im[i] for i in tr_idx_im]
+    splits['va_fls_im'] = [fls_im[i] for i in va_idx_im]
+    splits['te_fls_im'] = [fls_im[i] for i in te_idx_im]
 
-    return tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im,\
-        va_fls_sk, va_clss_sk, va_fls_im, va_clss_im,\
-        te_fls_sk, te_clss_sk, te_fls_im, te_clss_im
+    splits['tr_clss_im'] = [clss_im[i] for i in tr_idx_im]
+    splits['va_clss_im'] = [clss_im[i] for i in va_idx_im]
+    splits['te_clss_im' = [clss_im[i] for i in te_idx_im]
 
-
-def load_files_quickdraw_zeroshot(root_path, photo_dir='images', sketch_dir='sketches', photo_sd='', sketch_sd=''):
-    path_im = os.path.join(root_path, photo_dir, photo_sd)
-    path_sk = os.path.join(root_path, sketch_dir, sketch_sd)
-
-    # image files and classes
-    fls_im = glob.glob(os.path.join(path_im, '*', '*.jpg'))
-    fls_im = [os.path.join(f.split('/')[-2], f.split('/')[-1]) for f in fls_im]
-    clss_im = [f.split('/')[-2] for f in fls_im]
-
-    # all the unique classes
-    classes = np.unique(clss_im)
-
-    # divide the classes, done according to the "Zero-Shot Sketch-Image Hashing" paper
-    tr_classes = np.random.choice(classes, int(0.73 * len(classes)), replace=False).tolist()
-    va_classes = np.random.choice([x for x in classes if x not in tr_classes], int(0.14 * len(classes)),
-                                  replace=False).tolist()
-    te_classes = [x for x in classes if x not in tr_classes and x not in va_classes]
-
-    # sketch files and classes
-    fls_sk = glob.glob(os.path.join(path_sk, '*', '*.png'))
-    fls_sk = [os.path.join(f.split('/')[-2], f.split('/')[-1]) for f in fls_sk]
-    clss_sk = [f.split('/')[-2] for f in fls_sk]
-
-    tr_idx_im, tr_idx_sk = get_classwise_samples(tr_classes, fls_im, fls_sk, set_type='train')
-    va_idx_im, va_idx_sk = get_classwise_samples(va_classes, fls_im, fls_sk, set_type='valid')
-    te_idx_im, te_idx_sk = get_classwise_samples(te_classes, fls_im, fls_sk, set_type='test')
-
-    # Truncate the dataset for quicker retrieval
-    va_idx_im = random.sample(va_idx_im, 15000)
-    va_idx_sk = random.sample(va_idx_sk, 7500)
-    te_idx_im = random.sample(te_idx_im, 15000)
-    te_idx_sk = random.sample(te_idx_sk, 7500)
-
-    tr_fls_sk = [fls_sk[i] for i in tr_idx_sk]
-    va_fls_sk = [fls_sk[i] for i in va_idx_sk]
-    te_fls_sk = [fls_sk[i] for i in te_idx_sk]
-
-    tr_clss_sk = [clss_sk[i] for i in tr_idx_sk]
-    va_clss_sk = [clss_sk[i] for i in va_idx_sk]
-    te_clss_sk = [clss_sk[i] for i in te_idx_sk]
-
-    tr_fls_im = [fls_im[i] for i in tr_idx_im]
-    va_fls_im = [fls_im[i] for i in va_idx_im]
-    te_fls_im = [fls_im[i] for i in te_idx_im]
-
-    tr_clss_im = [clss_im[i] for i in tr_idx_im]
-    va_clss_im = [clss_im[i] for i in va_idx_im]
-    te_clss_im = [clss_im[i] for i in te_idx_im]
-
-    return tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im, \
-           va_fls_sk, va_clss_sk, va_fls_im, va_clss_im, \
-           te_fls_sk, te_clss_sk, te_fls_im, te_clss_im
+    return splits
 
 
 def prec(actual, predicted, k):

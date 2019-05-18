@@ -342,8 +342,11 @@ class SEM_PCYC(nn.Module):
         # Sum the above discriminator losses for displaying
         loss_disc = loss_disc_se + loss_disc_sk + loss_disc_im
 
-        return loss_aut_enc, loss_gen_adv, loss_gen_cyc, loss_gen_cls, loss_gen, loss_disc_se, loss_disc_sk,\
-            loss_disc_im, loss_disc
+        loss = {'aut_enc': loss_aut_enc, 'gen_adv': loss_gen_adv, 'gen_cyc': loss_gen_cyc, 'gen_cls': loss_gen_cls,
+                'gen': loss_gen, 'disc_se': loss_disc_se, 'disc_sk': loss_disc_sk, 'disc_im': loss_disc_im,
+                'disc': loss_disc}
+
+        return loss
 
     def optimize_params(self, sk, im, cl):
 
@@ -357,16 +360,17 @@ class SEM_PCYC(nn.Module):
             for s in self.sem:
                 se_c = np.concatenate((se_c, s.get(c).astype(np.float32)), axis=0)
             se[i] = se_c
-        se = torch.from_numpy(se).cuda()
+        se = torch.from_numpy(se)
+        if torch.cuda.is_available:
+            se = se.cuda()
 
         # Forward pass
         self.forward(sk, im, se)
-        # Backward pass
-        loss_aut_enc, loss_gen_adv, loss_gen_cyc, loss_gen_cls, loss_gen, loss_disc_se, loss_disc_sk, loss_disc_im,\
-        loss_disc = self.backward(se, num_cls)
 
-        return loss_aut_enc, loss_gen_adv, loss_gen_cyc, loss_gen_cls, loss_gen, loss_disc_se, loss_disc_sk, \
-               loss_disc_im, loss_disc
+        # Backward pass
+        loss = self.backward(se, num_cls)
+
+        return loss
 
     def get_sketch_embeddings(self, sk):
 

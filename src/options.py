@@ -22,8 +22,6 @@ class Options:
                             help='Whether to use the train test split done in the ECCV 2018 paper')
         parser.add_argument('--gzs-sbir', action='store_true', default=False,
                             help='Generalized zero-shot sketch based image retrieval')
-        parser.add_argument('--fine-grained', action='store_true', default=False,
-                            help='Fine grained zero-shot sketch based image retrieval')
         # Semantic models
         parser.add_argument('--semantic-models', nargs='+', default=['word2vec-google-news', 'hieremb-path'],
                             type=str, help='Semantic model')
@@ -34,7 +32,6 @@ class Options:
         parser.add_argument('--lambda-gen-cyc', default=1.0, type=float, help='Weight on cycle consistency loss (gen)')
         parser.add_argument('--lambda-gen-adv', default=1.0, type=float, help='Weight on adversarial loss (gen)')
         parser.add_argument('--lambda-gen-cls', default=1.0, type=float, help='Weight on classification loss (gen)')
-        parser.add_argument('--lambda-gen-reg', default=1.0, type=float, help='Weight on regression loss (gen)')
         parser.add_argument('--lambda-disc-se', default=0.25, type=float, help='Weight on semantic loss (disc)')
         parser.add_argument('--lambda-disc-sk', default=0.5, type=float, help='Weight on sketch loss (disc)')
         parser.add_argument('--lambda-disc-im', default=0.5, type=float, help='Weight on image loss (disc)')

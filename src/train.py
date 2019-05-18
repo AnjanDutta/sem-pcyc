@@ -33,34 +33,30 @@ def main():
     args = Options().parse()
     print('Parameters:\t' + str(args))
 
-    if args.fine_grained:
-        assert args.dataset.split('_')[0] == 'Sketchy'
-
     # Read the config file and
     config = utils.read_config()
     path_dataset = config['path_dataset']
     path_aux = config['path_aux']
 
     # modify the log and check point paths
+    ds_var = None
     if '_' in args.dataset:
         token = args.dataset.split('_')
         args.dataset = token[0]
         ds_var = token[1]
-    else:
-        ds_var = None
+
     args.semantic_models = sorted(args.semantic_models)
     model_name = '+'.join(args.semantic_models)
     root_path = os.path.join(path_dataset, args.dataset)
     str_aux = ''
-    if args.fine_grained:
-        str_aux = str_aux + 'fine-grained'
+
     if args.split_eccv_2018:
         str_aux = 'split_eccv_2018'
-    path_sketch_model = os.path.join(path_aux, 'CheckPoints', 'sketch', args.dataset, 'vanilla')
-    path_image_model = os.path.join(path_aux, 'CheckPoints', 'image', args.dataset, 'vanilla')
+    path_sketch_model = os.path.join(path_aux, 'CheckPoints', args.dataset, 'sketch')
+    path_image_model = os.path.join(path_aux, 'CheckPoints', args.dataset, 'image')
     path_cp = os.path.join(path_aux, 'CheckPoints', args.dataset, str_aux, model_name, str(args.dim_out))
     path_log = os.path.join(path_aux, 'LogFiles', args.dataset, str_aux, model_name, str(args.dim_out))
-    path_qualitative_results = os.path.join(path_aux, 'Results', args.dataset, str_aux, model_name, str(args.dim_out))
+    path_results = os.path.join(path_aux, 'Results', args.dataset, str_aux, model_name, str(args.dim_out))
     files_semantic_labels = []
     sem_dim = 0
     for f in args.semantic_models:
@@ -70,7 +66,7 @@ def main():
 
     print('Checkpoint path: {}'.format(path_cp))
     print('Logger path: {}'.format(path_log))
-    print('Result path: {}'.format(path_qualitative_results))
+    print('Result path: {}'.format(path_results))
 
     # Parameters for transforming the images
     transform_image = transforms.Compose([transforms.Resize((args.im_sz, args.im_sz)), transforms.ToTensor()])
@@ -88,91 +84,59 @@ def main():
             photo_sd = 'tx_000000000000'
         sketch_dir = 'sketch'
         sketch_sd = 'tx_000000000000'
-
-        if args.fine_grained:
-            tr_fls_sk, tr_cfs_sk, tr_clss_sk, tr_fls_im, tr_cfs_im, tr_clss_im, \
-            va_fls_sk, va_clss_sk, _, va_fls_im, va_clss_im, _, \
-            te_fls_sk, te_clss_sk, _, te_fls_im, te_clss_im, _ = \
-                utils.load_files_sketchy_finegrained_zeroshot(root_path=root_path, split_eccv_2018=args.split_eccv_2018,
-                                                              photo_dir=photo_dir, sketch_dir=sketch_dir,
-                                                              photo_sd=photo_sd, sketch_sd=sketch_sd)
-        else:
-            tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im, \
-            va_fls_sk, va_clss_sk, va_fls_im, va_clss_im, \
-            te_fls_sk, te_clss_sk, te_fls_im, te_clss_im = utils.load_files_sketchy_zeroshot(root_path=root_path,
-                                                                                             split_eccv_2018=
-                                                                                             args.split_eccv_2018,
-                                                                                             photo_dir=photo_dir,
-                                                                                             sketch_dir=sketch_dir,
-                                                                                             photo_sd=photo_sd,
-                                                                                             sketch_sd=sketch_sd)
+        splits = utils.load_files_sketchy_zeroshot(root_path=root_path, split_eccv_2018=args.split_eccv_2018,
+                                                   photo_dir=photo_dir, sketch_dir=sketch_dir, photo_sd=photo_sd,
+                                                   sketch_sd=sketch_sd)
     elif args.dataset == 'TU-Berlin':
         photo_dir = 'images'
         sketch_dir = 'sketches'
         photo_sd = ''
         sketch_sd = ''
-        tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im, \
-            va_fls_sk, va_clss_sk, va_fls_im, va_clss_im, \
-            te_fls_sk, te_clss_sk, te_fls_im, te_clss_im = utils.load_files_tuberlin_zeroshot(root_path=root_path,
-                                                                                              photo_dir=photo_dir,
-                                                                                              sketch_dir=sketch_dir,
-                                                                                              photo_sd=photo_sd,
-                                                                                              sketch_sd=sketch_sd)
-    elif args.dataset == 'QuickDraw':
-        photo_dir = 'images'
-        sketch_dir = 'sketches'
-        photo_sd = ''
-        sketch_sd = ''
-        tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im, \
-        va_fls_sk, va_clss_sk, va_fls_im, va_clss_im, \
-        te_fls_sk, te_clss_sk, te_fls_im, te_clss_im = utils.load_files_quickdraw_zeroshot(root_path=root_path,
-                                                                                           photo_dir=photo_dir,
-                                                                                           sketch_dir=sketch_dir,
-                                                                                           photo_sd=photo_sd,
-                                                                                           sketch_sd=sketch_sd)
+        splits = utils.load_files_tuberlin_zeroshot(root_path=root_path, photo_dir=photo_dir, sketch_dir=sketch_dir,
+                                                    photo_sd=photo_sd, sketch_sd=sketch_sd)
     else:
         print('Wrong dataset.')
         exit()
 
     # Combine the valid and test set into test set
-    te_fls_sk = va_fls_sk + te_fls_sk
-    te_clss_sk = va_clss_sk + te_clss_sk
-    te_fls_im = va_fls_im + te_fls_im
-    te_clss_im = va_clss_im + te_clss_im
+    splits['te_fls_sk'] = splits['va_fls_sk'] + splits['te_fls_sk']
+    splits['te_clss_sk'] = splits['va_clss_sk'] + splits['te_clss_sk']
+    splits['te_fls_im'] = splits['va_fls_im'] + splits['te_fls_im']
+    splits['te_clss_im'] = splits['va_clss_im'] + splits['te_clss_im']
 
     if args.gzs_sbir:
         perc = 0.2
         _, idx_sk = np.unique(tr_fls_sk, return_index=True)
-        tr_fls_sk_ = [tr_fls_sk[i] for i in idx_sk]
-        tr_clss_sk_ = [tr_clss_sk[i] for i in idx_sk]
-        _, idx_im = np.unique(tr_fls_im, return_index=True)
-        tr_fls_im_ = [tr_fls_im[i] for i in idx_im]
-        tr_clss_im_ = [tr_clss_im[i] for i in idx_im]
+        tr_fls_sk_ = [splits['tr_fls_sk'][i] for i in idx_sk]
+        tr_clss_sk_ = [splits['tr_clss_sk'][i] for i in idx_sk]
+        _, idx_im = np.unique(splits['tr_fls_im'], return_index=True)
+        tr_fls_im_ = [splits['tr_fls_im'][i] for i in idx_im]
+        tr_clss_im_ = [splits['tr_clss_im'][i] for i in idx_im]
         if args.dataset == 'Sketchy':
             _, idx_sk = np.unique([f.split('-')[0] for f in tr_fls_sk_], return_index=True)
             tr_fls_sk_ = [tr_fls_sk_[i] for i in idx_sk]
             tr_clss_sk_ = [tr_clss_sk_[i] for i in idx_sk]
-        idx_sk = np.sort(np.random.choice(len(tr_fls_sk_), int(perc * len(te_fls_sk)), replace=False))
-        idx_im = np.sort(np.random.choice(len(tr_fls_im_), int(perc * len(te_fls_im)), replace=False))
-        te_fls_sk = [tr_fls_sk_[i] for i in idx_sk] + te_fls_sk
-        te_clss_sk = [tr_clss_sk_[i] for i in idx_sk] + te_clss_sk
-        te_fls_im = [tr_fls_im_[i] for i in idx_im] + te_fls_im
-        te_clss_im = [tr_clss_im_[i] for i in idx_im] + te_clss_im
+        idx_sk = np.sort(np.random.choice(len(tr_fls_sk_), int(perc * len(splits['te_fls_sk'])), replace=False))
+        idx_im = np.sort(np.random.choice(len(tr_fls_im_), int(perc * len(splits['te_fls_im'])), replace=False))
+        splits['te_fls_sk'] = [tr_fls_sk_[i] for i in idx_sk] + splits['te_fls_sk']
+        splits['te_clss_sk'] = [tr_clss_sk_[i] for i in idx_sk] + splits['te_clss_sk']
+        splits['te_fls_im'] = [tr_fls_im_[i] for i in idx_im] + splits['te_fls_im']
+        splits['te_clss_im'] = [tr_clss_im_[i] for i in idx_im] + splits['te_clss_im']
 
     # class dictionary
-    dict_clss = utils.create_dict_texts(tr_clss_im)
+    dict_clss = utils.create_dict_texts(splits['tr_clss_im'])
 
-    data_train = DataGeneratorPaired(args.dataset, root_path, photo_dir, sketch_dir, photo_sd, sketch_sd, tr_fls_sk,
-                                     tr_fls_im, tr_clss_im, transforms_sketch=transform_sketch,
-                                     transforms_image=transform_image)
-    data_valid_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, va_fls_sk, va_clss_sk,
-                                            transforms=transform_sketch)
-    data_valid_image = DataGeneratorImage(args.dataset, root_path, photo_dir, photo_sd, va_fls_im, va_clss_im,
-                                          transforms=transform_image)
-    data_test_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, te_fls_sk, te_clss_sk,
-                                           transforms=transform_sketch)
-    data_test_image = DataGeneratorImage(args.dataset, root_path, photo_dir, photo_sd, te_fls_im, te_clss_im,
-                                         transforms=transform_image)
+    data_train = DataGeneratorPaired(args.dataset, root_path, photo_dir, sketch_dir, photo_sd, sketch_sd,
+                                     splits['tr_fls_sk'], splits['tr_fls_im'], splits['tr_clss_im'],
+                                     transforms_sketch=transform_sketch, transforms_image=transform_image)
+    data_valid_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, splits['va_fls_sk'],
+                                            splits['va_clss_sk'], transforms=transform_sketch)
+    data_valid_image = DataGeneratorImage(args.dataset, root_path, photo_dir, photo_sd, splits['va_fls_im'],
+                                          splits['va_clss_im'], transforms=transform_image)
+    data_test_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, splits['te_fls_sk'],
+                                           splits['te_clss_sk'], transforms=transform_sketch)
+    data_test_image = DataGeneratorImage(args.dataset, root_path, photo_dir, photo_sd, splits['te_fls_im'],
+                                         splits['te_clss_im'], transforms=transform_image)
     print('Done')
 
     train_sampler = WeightedRandomSampler(data_train.get_weights(), num_samples=args.epoch_size * args.batch_size,
@@ -257,39 +221,38 @@ def main():
             sem_pcyc_model.scheduler_ae.step()
 
             # train on training set
-            losses_aut_enc, losses_gen_adv, losses_gen_cyc, losses_gen_cls, losses_gen, losses_disc_se, losses_disc_sk,\
-            losses_disc_im, losses_disc = train(train_loader, sem_pcyc_model, epoch, args)
+            losses = train(train_loader, sem_pcyc_model, epoch, args)
 
             # evaluate on validation set, map_ since map is already there
             print('***Validation***')
-            metric, _, _, _, _ = validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, args)
-            map_ = np.mean(metric['aps@all'])
+            valid_data = validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, args)
+            map_ = np.mean(valid_data['aps@all'])
 
             print('mAP@all on validation set after {0} epochs: {1:.4f} (real), {2:.4f} (binary)'
-                .format(epoch + 1, map_, np.mean(metric['aps@all_bin'])))
+                .format(epoch + 1, map_, np.mean(valid_data['aps@all_bin'])))
 
             del metric
 
             if map_ > best_map:
                 best_map = map_
                 early_stop_counter = 0
-                utils.save_checkpoint({'epoch': epoch + 1, 'state_dict': sem_pcyc_model.state_dict(),
-                                       'best_map': best_map}, directory=path_cp)
+                utils.save_checkpoint({'epoch': epoch + 1, 'state_dict': sem_pcyc_model.state_dict(), 'best_map':
+                    best_map}, directory=path_cp)
             else:
                 if args.early_stop == early_stop_counter:
                     break
                 early_stop_counter += 1
 
             # Logger step
-            logger.add_scalar('semantic autoencoder loss', losses_aut_enc.avg)
-            logger.add_scalar('generator adversarial loss', losses_gen_adv.avg)
-            logger.add_scalar('generator cycle consistency loss', losses_gen_cyc.avg)
-            logger.add_scalar('generator classification loss', losses_gen_cls.avg)
-            logger.add_scalar('generator loss', losses_gen.avg)
-            logger.add_scalar('semantic discriminator loss', losses_disc_se.avg)
-            logger.add_scalar('sketch discriminator loss', losses_disc_sk.avg)
-            logger.add_scalar('image discriminator loss', losses_disc_im.avg)
-            logger.add_scalar('discriminator loss', losses_disc.avg)
+            logger.add_scalar('semantic autoencoder loss', losses['aut_enc'].avg)
+            logger.add_scalar('generator adversarial loss', losses['gen_adv'].avg)
+            logger.add_scalar('generator cycle consistency loss', losses['gen_cyc'].avg)
+            logger.add_scalar('generator classification loss', losses['gen_cls'].avg)
+            logger.add_scalar('generator loss', losses['gen'].avg)
+            logger.add_scalar('semantic discriminator loss', losses['disc_se'].avg)
+            logger.add_scalar('sketch discriminator loss', losses['disc_sk'].avg)
+            logger.add_scalar('image discriminator loss', losses['disc_im'].avg)
+            logger.add_scalar('discriminator loss', losses['disc'].avg)
             logger.add_scalar('mean average precision', map_)
             logger.step()
 
@@ -303,14 +266,14 @@ def main():
         sem_pcyc_model.load_state_dict(checkpoint['state_dict'])
         print("Loaded best model '{0}' (epoch {1}; mAP@all {2:.4f})".format(best_model_file, epoch, best_map))
         print('***Test***')
-        metric, sim, str_sim, sk_ind, im_ind = validate(test_loader_sketch, test_loader_image, sem_pcyc_model, epoch,
-                                                        args)
+        valid_data = validate(test_loader_sketch, test_loader_image, sem_pcyc_model, epoch, args)
         print('Results on test set: Prec@100 = {0:.4f}, mAP@all = {1:.4f}, Prec@200 = {2:.4f}, mAP@200 = {3:.4f}, '
               'Time = {4:.6f} || Prec@100 (binary) = {5:.4f}, mAP@all (binary) = {6:.4f}, Prec@200 (binary) = {7:.4f}, '
               'mAP@200 (binary) = {8:.4f}, Time (binary) = {9:.6f} '
-            .format(metric['prec@100'], np.mean(metric['aps@all']), metric['prec@200'], np.mean(metric['aps@200']),
-                    metric['time'], metric['prec@100_bin'], np.mean(metric['aps@all_bin']), metric['prec@200_bin'],
-                    np.mean(metric['aps@200_bin']), metric['time_bin']))
+              .format(valid_data['prec@100'], np.mean(valid_data['aps@all']), valid_data['prec@200'],
+                      np.mean(valid_data['aps@200']), valid_data['time'], valid_data['prec@100_bin'],
+                      np.mean(valid_data['aps@all_bin']), valid_data['prec@200_bin'], np.mean(valid_data['aps@200_bin']),
+                      valid_data['time_bin']))
     else:
         print("No best model found at '{}'. Exiting...".format(best_model_file))
         exit()
@@ -342,19 +305,18 @@ def train(train_loader, sem_pcyc_model, epoch, args):
             sk, im = sk.cuda(), im.cuda()
 
         # Optimize parameters
-        loss_aut_enc, loss_gen_adv, loss_gen_cyc, loss_gen_cls, loss_gen, loss_disc_se, loss_disc_sk, loss_disc_im,\
-        loss_disc = sem_pcyc_model.optimize_params(sk, im, cl)
+        loss = sem_pcyc_model.optimize_params(sk, im, cl)
 
         # Store losses for visualization
-        losses_aut_enc.update(loss_aut_enc.item(), sk.size(0))
-        losses_gen_adv.update(loss_gen_adv.item(), sk.size(0))
-        losses_gen_cyc.update(loss_gen_cyc.item(), sk.size(0))
-        losses_gen_cls.update(loss_gen_cls.item(), sk.size(0))
-        losses_gen.update(loss_gen.item(), sk.size(0))
-        losses_disc_se.update(loss_disc_se.item(), sk.size(0))
-        losses_disc_sk.update(loss_disc_sk.item(), sk.size(0))
-        losses_disc_im.update(loss_disc_im.item(), sk.size(0))
-        losses_disc.update(loss_disc.item(), sk.size(0))
+        losses_aut_enc.update(loss['aut_enc'].item(), sk.size(0))
+        losses_gen_adv.update(loss['gen_adv'].item(), sk.size(0))
+        losses_gen_cyc.update(loss['gen_cyc'].item(), sk.size(0))
+        losses_gen_cls.update(loss['gen_cls'].item(), sk.size(0))
+        losses_gen.update(loss['gen'].item(), sk.size(0))
+        losses_disc_se.update(loss['disc_se'].item(), sk.size(0))
+        losses_disc_sk.update(loss['disc_sk'].item(), sk.size(0))
+        losses_disc_im.update(loss['disc_im'].item(), sk.size(0))
+        losses_disc.update(loss['disc'].item(), sk.size(0))
 
         # time
         time_end = time.time()
@@ -369,8 +331,11 @@ def train(train_loader, sem_pcyc_model, epoch, args):
                   .format(epoch + 1, i + 1, len(train_loader), batch_time=batch_time, loss_gen=losses_gen,
                           loss_disc=losses_disc))
 
-    return losses_aut_enc, losses_gen_adv, losses_gen_cyc, losses_gen_cls, losses_gen, losses_disc_se, losses_disc_sk, \
-           losses_disc_im, losses_disc
+    losses = {'aut_enc': losses_aut_enc, 'gen_adv': losses_gen_adv, 'gen_cyc': losses_gen_cyc,
+              'gen_cls': losses_gen_cls, 'gen': losses_gen, 'disc_se': losses_disc_se, 'disc_sk': losses_disc_sk,
+              'disc_im': losses_disc_im, 'disc': losses_disc}
+
+    return losses
 
 
 if __name__ == '__main__':

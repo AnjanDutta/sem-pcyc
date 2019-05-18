@@ -48,7 +48,7 @@ def main():
     root_path = os.path.join(path_dataset, args.dataset)
     path_cp = os.path.join(path_aux, 'CheckPoints', args.dataset, str_aux, model_name, str(args.dim_out))
     path_log = os.path.join(path_aux, 'LogFiles', args.dataset, str_aux, model_name, str(args.dim_out))
-    path_qualitative_results = os.path.join(path_aux, 'Results', args.dataset, str_aux, model_name, str(args.dim_out))
+    path_results = os.path.join(path_aux, 'Results', args.dataset, str_aux, model_name, str(args.dim_out))
 
     # Parameters for transforming the images
     transform_image = transforms.Compose([transforms.Resize((args.im_sz, args.im_sz)), transforms.ToTensor()])
@@ -66,41 +66,24 @@ def main():
             photo_sd = 'tx_000000000000'
         sketch_dir = 'sketch'
         sketch_sd = 'tx_000000000000'
-
-        tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im, \
-            va_fls_sk, va_clss_sk, va_fls_im, va_clss_im, \
-            te_fls_sk, te_clss_sk, te_fls_im, te_clss_im = load_files_sketchy_zeroshot(root_path=root_path,
-                                                                                       split_eccv_2018=
-                                                                                       args.split_eccv_2018,
-                                                                                       photo_dir=photo_dir,
-                                                                                       sketch_dir=sketch_dir,
-                                                                                       photo_sd=photo_sd,
-                                                                                       sketch_sd=sketch_sd,
-                                                                                       repeat=1)
+        splits = utils.load_files_sketchy_zeroshot(root_path=root_path, split_eccv_2018=args.split_eccv_2018,
+                                                   photo_dir=photo_dir, sketch_dir=sketch_dir, photo_sd=photo_sd,
+                                                   sketch_sd=sketch_sd)
     elif args.dataset == 'TU-Berlin':
         photo_dir = 'images'
         sketch_dir = 'sketches'
         photo_sd = ''
         sketch_sd = ''
-        tr_fls_sk, tr_clss_sk, tr_fls_im, tr_clss_im, \
-            va_fls_sk, va_clss_sk, va_fls_im, va_clss_im, \
-            te_fls_sk, te_clss_sk, te_fls_im, te_clss_im = load_files_tuberlin_zeroshot(root_path=root_path,
-                                                                                        photo_dir=photo_dir,
-                                                                                        sketch_dir=sketch_dir,
-                                                                                        photo_sd=photo_sd,
-                                                                                        sketch_sd=sketch_sd,
-                                                                                        repeat=1)
-    elif args.dataset == 'QuickDraw':
-        NotImplementedError
+        splits = utils.load_files_tuberlin_zeroshot(root_path=root_path, photo_dir=photo_dir, sketch_dir=sketch_dir,
+                                                    photo_sd=photo_sd, sketch_sd=sketch_sd)
     else:
         print('Wrong dataset.')
         exit()
 
-    if args.combine_valid_test:
-        va_fls_sk = va_fls_sk + te_fls_sk
-        va_clss_sk = va_clss_sk + te_clss_sk
-        va_fls_im = va_fls_im + te_fls_im
-        va_clss_im = va_clss_im + te_clss_im
+    splits['te_fls_sk'] = splits['va_fls_sk'] + splits['te_fls_sk']
+    splits['te_clss_sk'] = splits['va_clss_sk'] + splits['te_clss_sk']
+    splits['te_fls_im'] = splits['va_fls_im'] + splits['te_fls_im']
+    splits['te_clss_im'] = splits['va_clss_im'] + splits['te_clss_im']
 
     if args.gzs_sbir > 0:
         tot_len = len(tr_fls_im)
@@ -110,18 +93,18 @@ def main():
         va_fls_im = [tr_fls_im[id] for id in idx] + va_fls_im + te_fls_im
         va_clss_im = [tr_clss_im[id] for id in idx] + va_clss_im + te_clss_im
 
-    data_valid_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, va_fls_sk, va_clss_sk,
-                                            transforms=transform_sketch)
-    data_valid_image = DataGeneratorImage(args.dataset, root_path, photo_dir, photo_sd, va_fls_im, va_clss_im,
-                                          transforms=transform_image)
+    data_test_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, splits['te_fls_sk'],
+                                           splits['te_clss_sk'], transforms=transform_sketch)
+    data_test_image = DataGeneratorImage(args.dataset, root_path, photo_dir, photo_sd, splits['te_fls_im'],
+                                         splits['te_clss_im'], transforms=transform_image)
     print('Done')
 
-    # PyTorch valid loader for query
-    valid_loader_sketch = DataLoader(dataset=data_valid_sketch, batch_size=args.batch_size, shuffle=True, num_workers=2,
-                                     pin_memory=True)
-    # PyTorch valid loader for query
-    valid_loader_image = DataLoader(dataset=data_valid_image, batch_size=args.batch_size, shuffle=True, num_workers=2,
-                                    pin_memory=True)
+    # PyTorch test loader for sketch
+    test_loader_sketch = DataLoader(dataset=data_test_sketch, batch_size=args.batch_size, shuffle=False,
+                                    num_workers=args.num_workers, pin_memory=True)
+    # PyTorch test loader for image
+    test_loader_image = DataLoader(dataset=data_test_image, batch_size=args.batch_size, shuffle=False,
+                                   num_workers=args.num_workers, pin_memory=True)
 
     # Model
     sem_pcyc_model = SEM_PCYC(params_model)
@@ -146,10 +129,14 @@ def main():
         sem_pcyc_model.load_state_dict(checkpoint['state_dict_gen_sk2se'])
         print("Loaded best model '{0}' (epoch {1}; mAP@all {2:.4f})".format(best_model_file, epoch, best_map))
         # evaluate on test set
-        metric, sim, str_sim, sk_ind, im_ind = validate(valid_loader_sketch, valid_loader_image, models, gens, epoch,
-                                                        args)
-        print('Results on test set: Prec@100 = {0:.4f}, mAP@all = {1:.4f}'
-              .format(metric['prec@100_bin'], np.mean(metric['aps@all_bin'])))
+        valid_data = validate(test_loader_sketch, test_loader_image, sem_pcyc_model, epoch, args)
+        print('Results on test set: Prec@100 = {0:.4f}, mAP@all = {1:.4f}, Prec@200 = {2:.4f}, mAP@200 = {3:.4f}, '
+              'Time = {4:.6f} || Prec@100 (binary) = {5:.4f}, mAP@all (binary) = {6:.4f}, Prec@200 (binary) = {7:.4f}, '
+              'mAP@200 (binary) = {8:.4f}, Time (binary) = {9:.6f} '
+              .format(valid_data['prec@100'], np.mean(valid_data['aps@all']), valid_data['prec@200'],
+                      np.mean(valid_data['aps@200']), valid_data['time'], valid_data['prec@100_bin'],
+                      np.mean(valid_data['aps@all_bin']), valid_data['prec@200_bin'],
+                      np.mean(valid_data['aps@200_bin']), valid_data['time_bin']))
     else:
         print("No best model found at '{}'. Exiting...".format(best_model_file))
         exit()
@@ -249,25 +236,14 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
     prec100_bin, rec100_bin = utils.precak(sim_ham, str_sim, k=100)
     prec200_bin, rec200_bin = utils.precak(sim_ham, str_sim, k=200)
 
-    metric = dict()
-    metric['aps@all'] = apsall
-    metric['aps@200'] = aps200
-    metric['prec@100'] = prec100
-    metric['rec@100'] = rec100
-    metric['prec@200'] = prec200
-    metric['rec@200'] = rec200
-    metric['time'] = time_euc
-    metric['aps@all_bin'] = apsall_bin
-    metric['aps@200_bin'] = aps200_bin
-    metric['prec@100_bin'] = prec100_bin
-    metric['rec@100_bin'] = rec100_bin
-    metric['prec@200_bin'] = prec200_bin
-    metric['rec@200_bin'] = rec200_bin
-    metric['time_bin'] = time_bin
+    valid_data = {'aps@all': apsall, 'aps@200': aps200, 'prec@100': prec100, 'rec@100': rec100, 'prec@200' prec200,
+                  'rec@200': rec200, 'time': time_euc, 'aps@all_bin': apsall_bin, 'aps@200_bin': aps200_bin,
+                  'prec@100_bin': prec100_bin, 'rec@100_bin': rec100_bin, 'prec@200_bin': prec200_bin,
+                  'rec@200_bin': rec200_bin, 'time_bin': time_bin}
 
     print('Done')
 
-    return metric, sim_ham, str_sim, acc_sk_ind, acc_im_ind
+    return valid_data
 
 
 if __name__ == '__main__':

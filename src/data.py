@@ -20,6 +20,11 @@ class DataGeneratorPaired(data.Dataset):
         self.fls_sk = fls_sk
         self.fls_im = fls_im
         self.clss = clss
+        uniq_clss, counts = np.unique(self.clss, return_counts=True)
+        self.weights = np.zeros(self.clss.shape[0])
+        for cls in uniq_clss:
+            idx = np.where(self.clss == cls)
+            self.weights[idx] = 1/idx.shape[0]
         self.transforms_sketch = transforms_sketch
         self.transforms_image = transforms_image
 
@@ -39,9 +44,7 @@ class DataGeneratorPaired(data.Dataset):
         return l
 
     def get_weights(self):
-        weights = np.ones(len(self.clss), dtype=np.float32)
-        weights = weights / len(self.clss)
-        return weights
+        return self.weights
 
 
 class DataGeneratorSketch(data.Dataset):

@@ -46,19 +46,5 @@ echo "Unzipping it"
 unzip $path_dataset/TU-Berlin/images.zip -d $path_dataset/TU-Berlin
 rm $path_dataset/TU-Berlin/images.zip
 mv $path_dataset/TU-Berlin/ImageResized $path_dataset/TU-Berlin/images
-########################################### download the QuickDraw dataset #############################################
-if [[ ! -d $path_dataset/QuickDraw ]]; then
-  mkdir $path_dataset/QuickDraw
-fi
-echo "Downloading the sketches of QuickDraw dataset (it will take some time)"
-wget http://datasets.cvc.uab.es/QuickDraw/QuickDraw_sketches_final.zip -O $path_dataset/QuickDraw/QuickDraw_sketches_final.zip
-unzip $path_dataset/QuickDraw/QuickDraw_sketches_final.zip -d $path_dataset/QuickDraw
-rm $path_dataset/QuickDraw/QuickDraw_sketches_final.zip
-mv $path_dataset/QuickDraw/QuickDraw_sketches_final $path_dataset/QuickDraw/sketches
-echo "Downloading the images of QuickDraw dataset (it will take some time)"
-wget http://datasets.cvc.uab.es/QuickDraw/QuickDraw_images_final.zip -O $path_dataset/QuickDraw/QuickDraw_images_final.zip
-unzip $path_dataset/QuickDraw/QuickDraw_images_final.zip -d $path_dataset/QuickDraw
-rm $path_dataset/QuickDraw/QuickDraw_images_final.zip
-mv $path_dataset/QuickDraw/QuickDraw_images_final $path_dataset/QuickDraw/QuickDraw_images
 
 chmod 755 -R $path_dataset
