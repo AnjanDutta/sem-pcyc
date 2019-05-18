@@ -27,6 +27,8 @@ year = {2019},
 <img src="./figures/sem-pcyc-demo.gif" width="500">
 </p>
 
+## [Live Demo](http://158.109.8.91/sketch_retrieval/)
+
 ## Retrieval Results
 
 #### Sketchy
@@ -56,7 +58,7 @@ year = {2019},
 * Linux (tested on Ubuntu 16.04)
 * NVIDIA GPU + CUDA CuDNN
 * 7z 
-```
+```bash
 sudo apt-get install p7zip-full
 ```
 ## Getting Started
@@ -77,17 +79,11 @@ pip3 install -r requirements.txt
 path_dataset = <where all the datasets will be downloaded>
 path_aux = <where all the auxiliary folders and files will be saved>
 ```
-### Download datasets and pre-process
+### Download datasets
 ```bash
 bash download_datasets.sh
 ```
-### Get semantic embeddings
-```bash
-```
-### Get pre-trained sketch and image models
-```bash
-```
-### Get a pre-trained SEM-PCYC model
+### Download pre-trained models
 ```bash
 ```
 ### Train
