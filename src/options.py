@@ -15,8 +15,6 @@ class Options:
         parser = argparse.ArgumentParser(description='SEM-PCYC for Zero-Shot Sketch-based Image Retrieval.')
         # Optional argument
         parser.add_argument('--dataset', required=True, default='Sketchy', help='Name of the dataset')
-        parser.add_argument('--resume', action='store_true', default=False,
-                            help='Whether to resume from the latest checkpoint')
         # Different training test sets
         parser.add_argument('--split-eccv-2018', action='store_true', default=False,
                             help='Whether to use the train test split done in the ECCV 2018 paper')
@@ -44,14 +42,12 @@ class Options:
         # Model parameters
         parser.add_argument('--batch-size', default=128, type=int, help='Batch size')
         parser.add_argument('--epoch-size', default=100, type=int, help='Epoch size')
-        parser.add_argument('--ngpu', type=int, default=1, help='0 = CPU, 1 = CUDA, 1 < DataParallel')
-        parser.add_argument('--multi-gpu', action='store_true', default=False, help='Enables Multiple GPU')
-        parser.add_argument('--num-workers', type=int, default=1, help='Number of workers in data loader')
+        parser.add_argument('--num-workers', type=int, default=4, help='Number of workers in data loader')
         # Checkpoint parameters
         parser.add_argument('--test', action='store_true', default=False, help='Test only flag')
         parser.add_argument('--early-stop', type=int, default=20, help='Early stopping epochs.')
         # Optimization parameters
-        parser.add_argument('--epochs', type=int, default=10, metavar='N',
+        parser.add_argument('--epochs', type=int, default=100, metavar='N',
                             help='Number of epochs to train (default: 100)')
         parser.add_argument('--lr', type=lambda x: utils.restricted_float(x, [1e-5, 0.5]), default=0.0001, metavar='LR',
                             help='Initial learning rate [1e-5, 5e-4] (default: 1e-4)')

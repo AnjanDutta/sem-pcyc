@@ -33,6 +33,13 @@ def main():
     args = Options().parse()
     print('Parameters:\t' + str(args))
 
+    if args.filter_sketch:
+        assert args.dataset == 'Sketchy'
+    if args.split_eccv_2018:
+        assert args.dataset == 'Sketchy_extended' or args.dataset == 'Sketchy'
+    if args.gzs_sbir:
+        args.test = True
+
     # Read the config file and
     config = utils.read_config()
     path_dataset = config['path_dataset']

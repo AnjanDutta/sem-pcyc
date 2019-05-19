@@ -31,6 +31,13 @@ def main():
     args = Options().parse()
     print('Parameters:\t' + str(args))
 
+    if args.filter_sketch:
+        assert args.dataset == 'Sketchy'
+    if args.split_eccv_2018:
+        assert args.dataset == 'Sketchy_extended' or args.dataset == 'Sketchy'
+    if args.gzs_sbir:
+        args.test = True
+
     # Read the config file and
     config = utils.read_config()
     path_dataset = config['path_dataset']
@@ -47,7 +54,6 @@ def main():
     model_name = '+'.join(args.semantic_models)
     root_path = os.path.join(path_dataset, args.dataset)
     path_cp = os.path.join(path_aux, 'CheckPoints', args.dataset, str_aux, model_name, str(args.dim_out))
-    path_log = os.path.join(path_aux, 'LogFiles', args.dataset, str_aux, model_name, str(args.dim_out))
     path_results = os.path.join(path_aux, 'Results', args.dataset, str_aux, model_name, str(args.dim_out))
 
     # Parameters for transforming the images
@@ -77,21 +83,32 @@ def main():
         splits = utils.load_files_tuberlin_zeroshot(root_path=root_path, photo_dir=photo_dir, sketch_dir=sketch_dir,
                                                     photo_sd=photo_sd, sketch_sd=sketch_sd)
     else:
-        print('Wrong dataset.')
-        exit()
+        raise Exception('Wrong dataset.')
 
-    splits['te_fls_sk'] = splits['va_fls_sk'] + splits['te_fls_sk']
-    splits['te_clss_sk'] = splits['va_clss_sk'] + splits['te_clss_sk']
-    splits['te_fls_im'] = splits['va_fls_im'] + splits['te_fls_im']
-    splits['te_clss_im'] = splits['va_clss_im'] + splits['te_clss_im']
+    # Combine the valid and test set into test set
+    splits['te_fls_sk'] = np.concatenate((splits['va_fls_sk'], splits['te_fls_sk']), axis=0)
+    splits['te_clss_sk'] = np.concatenate((splits['va_clss_sk'], splits['te_clss_sk']), axis=0)
+    splits['te_fls_im'] = np.concatenate((splits['va_fls_im'], splits['te_fls_im']), axis=0)
+    splits['te_clss_im'] = np.concatenate((splits['va_clss_im'], splits['te_clss_im']), axis=0)
 
     if args.gzs_sbir > 0:
-        tot_len = len(tr_fls_im)
-        idx = np.random.choice(np.arange(tot_len), int(args.gzs_sbir * tot_len), replace=False).tolist()
-        va_fls_sk = [tr_fls_sk[id] for id in idx] + va_fls_sk + te_fls_sk
-        va_clss_sk = [tr_clss_sk[id] for id in idx] + va_clss_sk + te_clss_sk
-        va_fls_im = [tr_fls_im[id] for id in idx] + va_fls_im + te_fls_im
-        va_clss_im = [tr_clss_im[id] for id in idx] + va_clss_im + te_clss_im
+        perc = 0.2
+        _, idx_sk = np.unique(splits['tr_fls_sk'], return_index=True)
+        tr_fls_sk_ = splits['tr_fls_sk'][idx_sk]
+        tr_clss_sk_ = splits['tr_clss_sk'][idx_sk]
+        _, idx_im = np.unique(splits['tr_fls_im'], return_index=True)
+        tr_fls_im_ = splits['tr_fls_im'][idx_im]
+        tr_clss_im_ = splits['tr_clss_im'][idx_im]
+        if args.dataset == 'Sketchy' and args.filter_sketch:
+            _, idx_sk = np.unique([f.split('-')[0] for f in tr_fls_sk_], return_index=True)
+            tr_fls_sk_ = tr_fls_sk_[idx_sk]
+            tr_clss_sk_ = tr_clss_sk_[idx_sk]
+        idx_sk = np.sort(np.random.choice(tr_fls_sk_.shape[0], int(perc * splits['te_fls_sk'].shape[0]), replace=False))
+        idx_im = np.sort(np.random.choice(tr_fls_im_.shape[0], int(perc * splits['te_fls_im'].shape[0]), replace=False))
+        splits['te_fls_sk'] = np.concatenate((tr_fls_sk_[idx_sk], splits['te_fls_sk']), axis=0)
+        splits['te_clss_sk'] = np.concatenate((tr_clss_sk_[idx_sk], splits['te_clss_sk']), axis=0)
+        splits['te_fls_im'] = np.concatenate((tr_fls_im_[idx_im], splits['te_fls_im']), axis=0)
+        splits['te_clss_im'] = np.concatenate((tr_clss_im_[idx_im], splits['te_clss_im']), axis=0)
 
     data_test_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, splits['te_fls_sk'],
                                            splits['te_clss_sk'], transforms=transform_sketch)
@@ -142,7 +159,7 @@ def main():
         exit()
 
 
-def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, args, logger=None):
+def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, args):
 
     # Switch to test mode
     sem_pcyc_model.eval()
