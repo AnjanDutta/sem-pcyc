@@ -19,6 +19,7 @@ def ITQ(V, n_iter):
     # Initialize with a orthogonal random rotation initialize with a orthogonal random rotation
 
     bit = V.shape[1]
+    np.random.seed(n_iter)
     R = np.random.randn(bit, bit)
     U11, S2, V2 = np.linalg.svd(R)
     R = U11[:, :bit]
