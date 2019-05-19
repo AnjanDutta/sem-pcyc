@@ -88,11 +88,14 @@ bash download_models.sh
 ```
 ### Train
 ```bash
-python3 src/train.py --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
+python3 src/train.py --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
 ```
 ### Test
 ```bash
-python3 src/train.py --test --dataset Sketchy --dim-out 64 --semantic-models word2vec-google-news
+python3 src/test.py --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
+```
+```bash
+python3 src/train.py --test --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
 ```
 ## Author
 * [Anjan Dutta](https://sites.google.com/site/2adutta/) ([@AnjanDutta](https://github.com/AnjanDutta))
