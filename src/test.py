@@ -236,7 +236,7 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
     prec100_bin, rec100_bin = utils.precak(sim_ham, str_sim, k=100)
     prec200_bin, rec200_bin = utils.precak(sim_ham, str_sim, k=200)
 
-    valid_data = {'aps@all': apsall, 'aps@200': aps200, 'prec@100': prec100, 'rec@100': rec100, 'prec@200' prec200,
+    valid_data = {'aps@all': apsall, 'aps@200': aps200, 'prec@100': prec100, 'rec@100': rec100, 'prec@200': prec200,
                   'rec@200': rec200, 'time': time_euc, 'aps@all_bin': apsall_bin, 'aps@200_bin': aps200_bin,
                   'prec@100_bin': prec100_bin, 'rec@100_bin': rec100_bin, 'prec@200_bin': prec200_bin,
                   'rec@200_bin': rec200_bin, 'time_bin': time_bin}

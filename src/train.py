@@ -95,33 +95,32 @@ def main():
         splits = utils.load_files_tuberlin_zeroshot(root_path=root_path, photo_dir=photo_dir, sketch_dir=sketch_dir,
                                                     photo_sd=photo_sd, sketch_sd=sketch_sd)
     else:
-        print('Wrong dataset.')
-        exit()
+        raise Exception('Wrong dataset.')
 
     # Combine the valid and test set into test set
-    splits['te_fls_sk'] = splits['va_fls_sk'] + splits['te_fls_sk']
-    splits['te_clss_sk'] = splits['va_clss_sk'] + splits['te_clss_sk']
-    splits['te_fls_im'] = splits['va_fls_im'] + splits['te_fls_im']
-    splits['te_clss_im'] = splits['va_clss_im'] + splits['te_clss_im']
+    splits['te_fls_sk'] = np.concatenate((splits['va_fls_sk'], splits['te_fls_sk']), axis=0)
+    splits['te_clss_sk'] = np.concatenate((splits['va_clss_sk'], splits['te_clss_sk']), axis=0)
+    splits['te_fls_im'] = np.concatenate((splits['va_fls_im'], splits['te_fls_im']), axis=0)
+    splits['te_clss_im'] = np.concatenate((splits['va_clss_im'], splits['te_clss_im']), axis=0)
 
     if args.gzs_sbir:
         perc = 0.2
-        _, idx_sk = np.unique(tr_fls_sk, return_index=True)
-        tr_fls_sk_ = [splits['tr_fls_sk'][i] for i in idx_sk]
-        tr_clss_sk_ = [splits['tr_clss_sk'][i] for i in idx_sk]
+        _, idx_sk = np.unique(splits['tr_fls_sk'], return_index=True)
+        tr_fls_sk_ = splits['tr_fls_sk'][idx_sk]
+        tr_clss_sk_ = splits['tr_clss_sk'][idx_sk]
         _, idx_im = np.unique(splits['tr_fls_im'], return_index=True)
-        tr_fls_im_ = [splits['tr_fls_im'][i] for i in idx_im]
-        tr_clss_im_ = [splits['tr_clss_im'][i] for i in idx_im]
-        if args.dataset == 'Sketchy':
+        tr_fls_im_ = splits['tr_fls_im'][idx_im]
+        tr_clss_im_ = splits['tr_clss_im'][idx_im]
+        if args.dataset == 'Sketchy' and args.filter_sketch:
             _, idx_sk = np.unique([f.split('-')[0] for f in tr_fls_sk_], return_index=True)
-            tr_fls_sk_ = [tr_fls_sk_[i] for i in idx_sk]
-            tr_clss_sk_ = [tr_clss_sk_[i] for i in idx_sk]
-        idx_sk = np.sort(np.random.choice(len(tr_fls_sk_), int(perc * len(splits['te_fls_sk'])), replace=False))
-        idx_im = np.sort(np.random.choice(len(tr_fls_im_), int(perc * len(splits['te_fls_im'])), replace=False))
-        splits['te_fls_sk'] = [tr_fls_sk_[i] for i in idx_sk] + splits['te_fls_sk']
-        splits['te_clss_sk'] = [tr_clss_sk_[i] for i in idx_sk] + splits['te_clss_sk']
-        splits['te_fls_im'] = [tr_fls_im_[i] for i in idx_im] + splits['te_fls_im']
-        splits['te_clss_im'] = [tr_clss_im_[i] for i in idx_im] + splits['te_clss_im']
+            tr_fls_sk_ = tr_fls_sk_[idx_sk]
+            tr_clss_sk_ = tr_clss_sk_[idx_sk]
+        idx_sk = np.sort(np.random.choice(tr_fls_sk_.shape[0], int(perc * splits['te_fls_sk'].shape[0]), replace=False))
+        idx_im = np.sort(np.random.choice(tr_fls_im_.shape[0], int(perc * splits['te_fls_im'].shape[0]), replace=False))
+        splits['te_fls_sk'] = np.concatenate((tr_fls_sk_[idx_sk], splits['te_fls_sk']), axis=0)
+        splits['te_clss_sk'] = np.concatenate((tr_clss_sk_[idx_sk], splits['te_clss_sk']), axis=0)
+        splits['te_fls_im'] = np.concatenate((tr_fls_im_[idx_im], splits['te_fls_im']), axis=0)
+        splits['te_clss_im'] = np.concatenate((tr_clss_im_[idx_im], splits['te_clss_im']), axis=0)
 
     # class dictionary
     dict_clss = utils.create_dict_texts(splits['tr_clss_im'])

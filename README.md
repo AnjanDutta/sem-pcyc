@@ -11,7 +11,8 @@ PyTorch implementation of our SEM-PCYC model for zero-shot sketch-based image re
 [Anjan Dutta](https://sites.google.com/site/2adutta/), [Zeynep Akata](https://ivi.fnwi.uva.nl/uvaboschdeltalab/people/zeynep-akata/)  
 [CVPR, 2019](http://cvpr2019.thecvf.com/)
 
-Bibtex:
+
+#### Citation
 ```angularjs
 @inproceedings{Dutta2019SEMPCYC,
 author = {Anjan Dutta and Zeynep Akata},
@@ -51,8 +52,6 @@ year = {2019},
 <img src="./figures/qual_results/tu-berlin/9/hedgehog.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/1_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/2_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/3_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/4_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/5_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/6_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/7_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/8_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/9_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/10_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/11_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/12_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/13_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/14_0.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/15_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/16_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/17_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/18_1.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/19_0.png" width="4.3%"> <img src="./figures/qual_results/tu-berlin/9/20_1.png" width="4.3%"><br>
 </p>
 
-#### QuickDraw
-
 ## Prerequisites
 
 * Linux (tested on Ubuntu 16.04)
@@ -69,11 +68,11 @@ sudo apt-get install p7zip-full
 git clone https://github.com/AnjanDutta/sem-pcyc.git
 cd sem-pcyc
 ```
-* Install the requirements
+* Install the requirements (not checked)
 ```bash
 pip3 install -r requirements.txt
 ```
-* Update [config.ini](https://github.com/AnjanDutta/sem-pcyc/blob/master/config.ini)
+* Update [config.ini](https://github.com/AnjanDutta/sem-pcyc/blob/master/config.ini) (see example)
 ```bash
 [<host>]
 path_dataset = <where all the datasets will be downloaded>
@@ -85,6 +84,7 @@ bash download_datasets.sh
 ```
 ### Download pre-trained models
 ```bash
+bash download_models.sh
 ```
 ### Train
 ```bash

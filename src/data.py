@@ -20,11 +20,6 @@ class DataGeneratorPaired(data.Dataset):
         self.fls_sk = fls_sk
         self.fls_im = fls_im
         self.clss = clss
-        uniq_clss, counts = np.unique(self.clss, return_counts=True)
-        self.weights = np.zeros(self.clss.shape[0])
-        for cls in uniq_clss:
-            idx = np.where(self.clss == cls)
-            self.weights[idx] = 1/idx.shape[0]
         self.transforms_sketch = transforms_sketch
         self.transforms_image = transforms_image
 
@@ -40,11 +35,15 @@ class DataGeneratorPaired(data.Dataset):
         return sk, im, cls
 
     def __len__(self):
-        l = len(self.clss)
-        return l
+        return len(self.clss)
 
     def get_weights(self):
-        return self.weights
+        weights = np.zeros(self.clss.shape[0])
+        uniq_clss = np.unique(self.clss)
+        for cls in uniq_clss:
+            idx = np.where(self.clss == cls)
+            weights[idx] = 1 / idx.shape[0]
+        return weights
 
 
 class DataGeneratorSketch(data.Dataset):
@@ -66,8 +65,7 @@ class DataGeneratorSketch(data.Dataset):
         return item, sk, cls_sk
 
     def __len__(self):
-        l = len(self.fls_sk)
-        return l
+        return len(self.fls_sk)
 
 
 class DataGeneratorImage(data.Dataset):
@@ -84,11 +82,9 @@ class DataGeneratorImage(data.Dataset):
     def __getitem__(self, item):
         im = Image.open(os.path.join(self.root, self.photo_dir, self.photo_sd, self.fls_im[item])).convert(mode='RGB')
         cls_im = self.clss_im[item]
-
         if self.transforms is not None:
             im = self.transforms(im)
         return item, im, cls_im
 
     def __len__(self):
-        l = len(self.fls_im)
-        return l
+        return len(self.fls_im)

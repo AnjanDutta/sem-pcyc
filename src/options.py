@@ -22,6 +22,7 @@ class Options:
                             help='Whether to use the train test split done in the ECCV 2018 paper')
         parser.add_argument('--gzs-sbir', action='store_true', default=False,
                             help='Generalized zero-shot sketch based image retrieval')
+        parser.add_argument('--filter-sketch', action='store_true', default=False, help='Filter augmented sketch')
         # Semantic models
         parser.add_argument('--semantic-models', nargs='+', default=['word2vec-google-news', 'hieremb-path'],
                             type=str, help='Semantic model')
