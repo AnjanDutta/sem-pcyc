@@ -44,17 +44,31 @@ def main():
     path_aux = config['path_aux']
 
     # modify the log and check point paths
+    ds_var = None
     if '_' in args.dataset:
         token = args.dataset.split('_')
         args.dataset = token[0]
         ds_var = token[1]
-    else:
-        ds_var = None
+
+    str_aux = ''
+    if args.split_eccv_2018:
+        str_aux = 'split_eccv_2018'
+    if args.gzs_sbir:
+        str_aux = os.path.join(str_aux, 'generalized')
     args.semantic_models = sorted(args.semantic_models)
     model_name = '+'.join(args.semantic_models)
     root_path = os.path.join(path_dataset, args.dataset)
     path_cp = os.path.join(path_aux, 'CheckPoints', args.dataset, str_aux, model_name, str(args.dim_out))
     path_results = os.path.join(path_aux, 'Results', args.dataset, str_aux, model_name, str(args.dim_out))
+    files_semantic_labels = []
+    sem_dim = 0
+    for f in args.semantic_models:
+        fi = os.path.join(path_aux, 'Semantic', args.dataset, f + '.npy')
+        files_semantic_labels.append(fi)
+        sem_dim += list(np.load(fi, allow_pickle=True).item().values())[0].shape[0]
+
+    print('Checkpoint path: {}'.format(path_cp))
+    print('Result path: {}'.format(path_results))
 
     # Parameters for transforming the images
     transform_image = transforms.Compose([transforms.Resize((args.im_sz, args.im_sz)), transforms.ToTensor()])
@@ -154,6 +168,12 @@ def main():
                       np.mean(valid_data['aps@200']), valid_data['time'], valid_data['prec@100_bin'],
                       np.mean(valid_data['aps@all_bin']), valid_data['prec@200_bin'],
                       np.mean(valid_data['aps@200_bin']), valid_data['time_bin']))
+        print('Saving qualitative results...', end='')
+        path_qualitative_results = os.path.join(path_results, 'qualitative_results')
+        utils.save_qualitative_results(root_path, sketch_dir, sketch_sd, photo_dir, photo_sd,
+                                       np.array(valid_data['aps@all']), sim, str_sim, te_fls_sk, sk_ind, te_fls_im,
+                                       im_ind, path_qualitative_results, save_image=args.save_image_results,
+                                       nq=args.number_qualit_results, best=args.save_best_results, )
     else:
         print("No best model found at '{}'. Exiting...".format(best_model_file))
         exit()

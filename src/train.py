@@ -52,13 +52,14 @@ def main():
         args.dataset = token[0]
         ds_var = token[1]
 
+    str_aux = ''
+    if args.split_eccv_2018:
+        str_aux = 'split_eccv_2018'
+    if args.gzs_sbir:
+        str_aux = os.path.join(str_aux, 'generalized')
     args.semantic_models = sorted(args.semantic_models)
     model_name = '+'.join(args.semantic_models)
     root_path = os.path.join(path_dataset, args.dataset)
-    str_aux = ''
-
-    if args.split_eccv_2018:
-        str_aux = 'split_eccv_2018'
     path_sketch_model = os.path.join(path_aux, 'CheckPoints', args.dataset, 'sketch')
     path_image_model = os.path.join(path_aux, 'CheckPoints', args.dataset, 'image')
     path_cp = os.path.join(path_aux, 'CheckPoints', args.dataset, str_aux, model_name, str(args.dim_out))

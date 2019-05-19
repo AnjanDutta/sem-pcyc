@@ -59,6 +59,10 @@ class Options:
                             help='How many batches to wait before logging training status')
         parser.add_argument('--save-image-results', action='store_true', default=False, help='Whether to save image '
                                                                                              'results')
+        parser.add_argument('--number-qualit-results', type=int, default=200, help='Number of qualitative results to be'
+                                                                                   ' saved')
+        parser.add_argument('--save-best-results', action='store_true', default=False, help='Whether to save the best '
+                                                                                            'results')
         self.parser = parser
 
     def parse(self):
