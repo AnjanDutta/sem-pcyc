@@ -182,7 +182,6 @@ def main():
     params_model['lambda_gen_cyc'] = args.lambda_gen_cyc
     params_model['lambda_gen_adv'] = args.lambda_gen_adv
     params_model['lambda_gen_cls'] = args.lambda_gen_cls
-    params_model['lambda_gen_reg'] = args.lambda_gen_reg
     params_model['lambda_disc_se'] = args.lambda_disc_se
     params_model['lambda_disc_sk'] = args.lambda_disc_sk
     params_model['lambda_disc_im'] = args.lambda_disc_im
