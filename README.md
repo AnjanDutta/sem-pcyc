@@ -94,6 +94,7 @@ python3 src/train.py --dataset Sketchy_extended --dim-out 64 --semantic-models w
 ```bash
 python3 src/test.py --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
 ```
+or
 ```bash
 python3 src/train.py --test --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
 ```

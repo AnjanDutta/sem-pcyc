@@ -147,13 +147,14 @@ def load_files_sketchy_zeroshot(root_path, split_eccv_2018=False, filter_sketch=
 
     # divide the classes
     if split_eccv_2018:
+        # According to Yelamarthi et al., "A Zero-Shot Framework for Sketch Based Image Retrieval", ECCV 2018.
         cur_path = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         with open(os.path.join(cur_path, "test_classes_eccv_2018.txt")) as fp:
             te_classes = fp.read().splitlines()
             va_classes = te_classes
             tr_classes = np.setdiff1d(classes, np.union1d(te_classes, va_classes))
     else:
-        # divide the classes, done according to the "Zero-Shot Sketch-Image Hashing", CVPR 2018 paper
+        # According to Shen et al., "Zero-Shot Sketch-Image Hashing", CVPR 2018.
         np.random.seed(0)
         tr_classes = np.random.choice(classes, int(0.8 * len(classes)), replace=False)
         va_classes = np.random.choice(np.setdiff1d(classes, tr_classes), int(0.1 * len(classes)), replace=False)
