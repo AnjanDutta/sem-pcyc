@@ -41,7 +41,7 @@ class DataGeneratorPaired(data.Dataset):
         weights = np.zeros(self.clss.shape[0])
         uniq_clss = np.unique(self.clss)
         for cls in uniq_clss:
-            idx = np.where(self.clss == cls)
+            idx = np.where(self.clss == cls)[0]
             weights[idx] = 1 / idx.shape[0]
         return weights
 
