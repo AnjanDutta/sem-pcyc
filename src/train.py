@@ -237,7 +237,7 @@ def main():
             print('mAP@all on validation set after {0} epochs: {1:.4f} (real), {2:.4f} (binary)'
                 .format(epoch + 1, map_, np.mean(valid_data['aps@all_bin'])))
 
-            del metric
+            del valid_data
 
             if map_ > best_map:
                 best_map = map_
