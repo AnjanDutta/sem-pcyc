@@ -42,6 +42,7 @@ class Options:
         # Model parameters
         parser.add_argument('--batch-size', default=128, type=int, help='Batch size')
         parser.add_argument('--epoch-size', default=100, type=int, help='Epoch size')
+        parser.add_argument('--ngpu', type=int, default=1, help='0 = CPU, 1 = CUDA, 1 < DataParallel')
         parser.add_argument('--num-workers', type=int, default=4, help='Number of workers in data loader')
         # Checkpoint parameters
         parser.add_argument('--test', action='store_true', default=False, help='Test only flag')
