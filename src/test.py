@@ -207,7 +207,7 @@ def main():
         print('Saving qualitative results...', end='')
         path_qualitative_results = os.path.join(path_results, 'qualitative_results')
         utils.save_qualitative_results(root_path, sketch_dir, sketch_sd, photo_dir, photo_sd,
-                                       np.array(valid_data['aps@all']), sim, str_sim, te_fls_sk, sk_ind, te_fls_im,
+                                       np.array(valid_data['aps@all']), valid_data['sim_euc'], valid_data['str_sim'], te_fls_sk, sk_ind, te_fls_im,
                                        im_ind, path_qualitative_results, save_image=args.save_image_results,
                                        nq=args.number_qualit_results, best=args.save_best_results)
     else:
@@ -292,7 +292,7 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
     # binary encoding with ITQ
     acc_sk_em_bin, acc_im_em_bin = itq.compressITQ(acc_sk_em, acc_im_em)
     t = time.time()
-    sim_ham = np.exp(-cdist(acc_sk_em_bin, acc_im_em_bin, metric='hamming'))
+    sim_bin = np.exp(-cdist(acc_sk_em_bin, acc_im_em_bin, metric='hamming'))
     time_bin = (time.time() - t) / acc_cls_sk.shape[0]
 
     # similarity of classes or ground truths
@@ -301,18 +301,18 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
 
     apsall = utils.apsak(sim_euc, str_sim)
     aps200 = utils.apsak(sim_euc, str_sim, k=200)
-    prec100, rec100 = utils.precak(sim_euc, str_sim, k=100)
-    prec200, rec200 = utils.precak(sim_euc, str_sim, k=200)
+    prec100, _ = utils.precak(sim_euc, str_sim, k=100)
+    prec200, _ = utils.precak(sim_euc, str_sim, k=200)
 
-    apsall_bin = utils.apsak(sim_ham, str_sim)
-    aps200_bin = utils.apsak(sim_ham, str_sim, k=200)
-    prec100_bin, rec100_bin = utils.precak(sim_ham, str_sim, k=100)
-    prec200_bin, rec200_bin = utils.precak(sim_ham, str_sim, k=200)
+    apsall_bin = utils.apsak(sim_bin, str_sim)
+    aps200_bin = utils.apsak(sim_bin, str_sim, k=200)
+    prec100_bin, _ = utils.precak(sim_bin, str_sim, k=100)
+    prec200_bin, _ = utils.precak(sim_bin, str_sim, k=200)
 
-    valid_data = {'aps@all': apsall, 'aps@200': aps200, 'prec@100': prec100, 'rec@100': rec100, 'prec@200': prec200,
-                  'rec@200': rec200, 'time': time_euc, 'aps@all_bin': apsall_bin, 'aps@200_bin': aps200_bin,
-                  'prec@100_bin': prec100_bin, 'rec@100_bin': rec100_bin, 'prec@200_bin': prec200_bin,
-                  'rec@200_bin': rec200_bin, 'time_bin': time_bin}
+    valid_data = {'aps@all': apsall, 'aps@200': aps200, 'prec@100': prec100, 'prec@200': prec200, 'sim_euc': sim_euc,
+                  'time_euc': time_euc, 'aps@all_bin': apsall_bin, 'aps@200_bin': aps200_bin, 'prec@100_bin':
+                      prec100_bin, 'prec@200_bin': prec200_bin, 'sim_bin': sim_bin, 'time_bin': time_bin, 'str_sim':
+                      str_sim}
 
     print('Done')
 
