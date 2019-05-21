@@ -201,7 +201,7 @@ def main():
               'Time = {4:.6f} || Prec@100 (binary) = {5:.4f}, mAP@all (binary) = {6:.4f}, Prec@200 (binary) = {7:.4f}, '
               'mAP@200 (binary) = {8:.4f}, Time (binary) = {9:.6f} '
               .format(valid_data['prec@100'], np.mean(valid_data['aps@all']), valid_data['prec@200'],
-                      np.mean(valid_data['aps@200']), valid_data['time'], valid_data['prec@100_bin'],
+                      np.mean(valid_data['aps@200']), valid_data['time_euc'], valid_data['prec@100_bin'],
                       np.mean(valid_data['aps@all_bin']), valid_data['prec@200_bin'], np.mean(valid_data['aps@200_bin'])
                       , valid_data['time_bin']))
         print('Saving qualitative results...', end='')
