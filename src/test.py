@@ -251,7 +251,7 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
                   'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                   .format(epoch + 1, i + 1, len(valid_loader_sketch), batch_time=batch_time))
 
-    for i, (ind, im, cls_im) in enumerate(valid_loader_image):
+    for i, (im, cls_im) in enumerate(valid_loader_image):
 
         if torch.cuda.is_available():
             im = im.cuda()
