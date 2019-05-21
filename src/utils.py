@@ -237,8 +237,8 @@ def load_files_tuberlin_zeroshot(root_path, photo_dir='images', sketch_dir='sket
     return splits
 
 
-def save_qualitative_results(root, sketch_dir, sketch_sd, photo_dir, photo_sd, aps, sim, str_sim, fls_sk, ind_sk,
-                             fls_im, ind_im, dir_op, nq=50, nim=20, im_sz=(256, 256), best=False, save_image=False):
+def save_qualitative_results(root, sketch_dir, sketch_sd, photo_dir, photo_sd, fls_sk, fls_im, dir_op, aps, sim,
+                             str_sim, nq=50, nim=20, im_sz=(256, 256), best=False, save_image=False):
 
     # Set directories according to dataset
     dir_sk = os.path.join(root, sketch_dir, sketch_sd)
@@ -250,30 +250,30 @@ def save_qualitative_results(root, sketch_dir, sketch_sd, photo_dir, photo_sd, a
         clean_folder(dir_op)
 
     if best:
-        ind_sk_ = np.argsort(-aps)[:nq]
+        ind_sk = np.argsort(-aps)[:nq]
     else:
         np.random.seed(0)
-        ind_sk_ = np.random.choice(len(aps), nq, replace=False)
+        ind_sk = np.random.choice(len(aps), nq, replace=False)
 
     # create a text file for results
     fp = open(os.path.join(dir_op, "Results.txt"), "w")
 
-    for i, isk in enumerate(ind_sk_):
-        fp.write("{0}, ".format(fls_sk[ind_sk[isk]]))
+    for i, isk in enumerate(ind_sk):
+        fp.write("{0}, ".format(fls_sk[isk]))
         if save_image:
             sdir_op = os.path.join(dir_op, str(i + 1))
             if not os.path.isdir(sdir_op):
                 os.makedirs(sdir_op)
-            sk = Image.open(os.path.join(dir_sk, fls_sk[ind_sk[isk]])).convert(mode='RGB').resize(im_sz)
-            sk.save(os.path.join(sdir_op, fls_sk[ind_sk[isk]].split('/')[0] + '.png'))
-        ind_im_ = np.argsort(-sim[isk])[:nim]
-        for j, iim in enumerate(ind_im_):
-            if j < len(ind_im_)-1:
-                fp.write("{0} {1}, ".format(fls_im[ind_im[iim]], str_sim[isk][iim]))
+            sk = Image.open(os.path.join(dir_sk, fls_sk[isk])).convert(mode='RGB').resize(im_sz)
+            sk.save(os.path.join(sdir_op, fls_sk[isk].split('/')[0] + '.png'))
+        ind_im = np.argsort(-sim[isk])[:nim]
+        for j, iim in enumerate(ind_im):
+            if j < len(ind_im)-1:
+                fp.write("{0} {1}, ".format(fls_im[iim], str_sim[isk][iim]))
             else:
-                fp.write("{0} {1}".format(fls_im[ind_im[iim]], str_sim[isk][iim]))
+                fp.write("{0} {1}".format(fls_im[iim], str_sim[isk][iim]))
             if save_image:
-                im = Image.open(os.path.join(dir_im, fls_im[ind_im[iim]])).convert(mode='RGB').resize(im_sz)
+                im = Image.open(os.path.join(dir_im, fls_im[iim])).convert(mode='RGB').resize(im_sz)
                 im.save(os.path.join(sdir_op, str(j + 1) + '_' + str(str_sim[isk][iim]) + '.png'))
         fp.write("\n")
     fp.close()

@@ -62,7 +62,7 @@ class DataGeneratorSketch(data.Dataset):
         cls_sk = self.clss_sk[item]
         if self.transforms is not None:
             sk = self.transforms(sk)
-        return item, sk, cls_sk
+        return sk, cls_sk
 
     def __len__(self):
         return len(self.fls_sk)
@@ -84,7 +84,7 @@ class DataGeneratorImage(data.Dataset):
         cls_im = self.clss_im[item]
         if self.transforms is not None:
             im = self.transforms(im)
-        return item, im, cls_im
+        return im, cls_im
 
     def __len__(self):
         return len(self.fls_im)

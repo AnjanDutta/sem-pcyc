@@ -206,9 +206,9 @@ def main():
                       , valid_data['time_bin']))
         print('Saving qualitative results...', end='')
         path_qualitative_results = os.path.join(path_results, 'qualitative_results')
-        utils.save_qualitative_results(root_path, sketch_dir, sketch_sd, photo_dir, photo_sd,
-                                       np.array(valid_data['aps@all']), valid_data['sim_euc'], valid_data['str_sim'], te_fls_sk, sk_ind, te_fls_im,
-                                       im_ind, path_qualitative_results, save_image=args.save_image_results,
+        utils.save_qualitative_results(root_path, sketch_dir, sketch_sd, photo_dir, photo_sd, te_fls_sk, te_fls_im,
+                                       path_qualitative_results, np.array(valid_data['aps@all']), valid_data['sim_euc'],
+                                       valid_data['str_sim'], save_image=args.save_image_results,
                                        nq=args.number_qualit_results, best=args.save_best_results)
     else:
         print("No best model found at '{}'. Exiting...".format(best_model_file))
@@ -225,7 +225,7 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
     # Start counting time
     time_start = time.time()
 
-    for i, (ind, sk, cls_sk) in enumerate(valid_loader_sketch):
+    for i, (sk, cls_sk) in enumerate(valid_loader_sketch):
 
         if torch.cuda.is_available():
             sk = sk.cuda()
@@ -235,11 +235,9 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
 
         # Accumulate sketch embedding
         if i == 0:
-            acc_sk_ind = ind
             acc_sk_em = sk_em.cpu().data.numpy()
             acc_cls_sk = cls_sk
         else:
-            acc_sk_ind = np.concatenate((acc_sk_ind, ind), axis=0)
             acc_sk_em = np.concatenate((acc_sk_em, sk_em.cpu().data.numpy()), axis=0)
             acc_cls_sk = np.concatenate((acc_cls_sk, cls_sk), axis=0)
 
@@ -263,11 +261,9 @@ def validate(valid_loader_sketch, valid_loader_image, sem_pcyc_model, epoch, arg
 
         # Accumulate sketch embedding
         if i == 0:
-            acc_im_ind = ind
             acc_im_em = im_em.cpu().data.numpy()
             acc_cls_im = cls_im
         else:
-            acc_im_ind = np.concatenate((acc_im_ind, ind), axis=0)
             acc_im_em = np.concatenate((acc_im_em, im_em.cpu().data.numpy()), axis=0)
             acc_cls_im = np.concatenate((acc_cls_im, cls_im), axis=0)
 

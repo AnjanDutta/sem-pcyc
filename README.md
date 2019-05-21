@@ -29,7 +29,7 @@ year = {2019},
 </p>
 
 ## Live Demo
-[<img src="./figures/screen-shot-live-demo.png" width="800">](http://158.109.8.91/sketch_retrieval/)
+[<img src="./figures/screen-shot-live-demo.png" width="500">](http://158.109.8.91/sketch_retrieval/)
 
 ## Retrieval Results
 
