@@ -31,7 +31,7 @@ year = {2019}
 ## Live Demo
 
 <p align="center">
-<a href="http://158.109.8.91/sketch_retrieval"><img src="./figures/screen-shot-live-demo.png" width="500">
+<a href="http://158.109.8.91/sketch_retrieval"><img src="./figures/screen-shot-live-demo.png" width="500"></a>
 </p>
 
 ## Retrieval Results
