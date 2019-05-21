@@ -57,6 +57,8 @@ def main():
     args.semantic_models = sorted(args.semantic_models)
     model_name = '+'.join(args.semantic_models)
     root_path = os.path.join(path_dataset, args.dataset)
+    path_sketch_model = os.path.join(path_aux, 'CheckPoints', args.dataset, 'sketch')
+    path_image_model = os.path.join(path_aux, 'CheckPoints', args.dataset, 'image')
     path_cp = os.path.join(path_aux, 'CheckPoints', args.dataset, str_aux, model_name, str(args.dim_out))
     path_results = os.path.join(path_aux, 'Results', args.dataset, str_aux, model_name, str(args.dim_out))
     files_semantic_labels = []
