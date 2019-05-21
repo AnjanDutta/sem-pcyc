@@ -215,6 +215,7 @@ class SEM_PCYC(nn.Module):
         self.lambda_gen_cyc = params_model['lambda_gen_cyc']
         self.lambda_gen_adv = params_model['lambda_gen_adv']
         self.lambda_gen_cls = params_model['lambda_gen_cls']
+        self.lambda_gen_reg = params_model['lambda_gen_reg']
         self.lambda_disc_se = params_model['lambda_disc_se']
         self.lambda_disc_sk = params_model['lambda_disc_sk']
         self.lambda_disc_im = params_model['lambda_disc_im']
@@ -299,8 +300,15 @@ class SEM_PCYC(nn.Module):
                        self.lambda_im * self.criterion_cls(self.classifier_im(self.se2im_em), cl)
         loss_gen_cls = self.lambda_gen_cls * loss_gen_cls
 
+        # Regression loss
+        loss_gen_reg = self.lambda_se * (self.criterion_reg(self.im2se_em, self.sk2se_em) +
+                                         self.criterion_reg(self.sk2se_em, self.im2se_em)) + \
+                       self.lambda_im * self.criterion_reg(self.se2im_em, self.im_fe) + \
+                       self.lambda_sk * self.criterion_reg(self.se2sk_em, self.sk_fe)
+        loss_gen_reg = self.lambda_gen_reg * loss_gen_reg
+
         # Sum the above generator losses for back propagation and displaying
-        loss_gen = loss_gen_adv + loss_gen_cyc + loss_gen_cls
+        loss_gen = loss_gen_adv + loss_gen_cyc + loss_gen_cls + loss_gen_reg
 
         self.optimizer_gen.zero_grad()
         loss_gen.backward(retain_graph=True)
@@ -335,8 +343,8 @@ class SEM_PCYC(nn.Module):
         loss_disc = loss_disc_se + loss_disc_sk + loss_disc_im
 
         loss = {'aut_enc': loss_aut_enc, 'gen_adv': loss_gen_adv, 'gen_cyc': loss_gen_cyc, 'gen_cls': loss_gen_cls,
-                'gen': loss_gen, 'disc_se': loss_disc_se, 'disc_sk': loss_disc_sk, 'disc_im': loss_disc_im,
-                'disc': loss_disc}
+                'gen_reg': loss_gen_reg, 'gen': loss_gen, 'disc_se': loss_disc_se, 'disc_sk': loss_disc_sk, 'disc_im':
+                    loss_disc_im, 'disc': loss_disc}
 
         return loss
 

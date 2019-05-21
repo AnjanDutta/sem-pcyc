@@ -19,7 +19,6 @@ from torch.utils.data.sampler import WeightedRandomSampler
 import utils
 from models import SEM_PCYC
 from logger import Logger, AverageMeter
-from losses import GANLoss
 from options import Options
 from test import validate
 from data import DataGeneratorPaired, DataGeneratorSketch, DataGeneratorImage
@@ -182,6 +181,7 @@ def main():
     params_model['lambda_gen_cyc'] = args.lambda_gen_cyc
     params_model['lambda_gen_adv'] = args.lambda_gen_adv
     params_model['lambda_gen_cls'] = args.lambda_gen_cls
+    params_model['lambda_gen_reg'] = args.lambda_gen_reg
     params_model['lambda_disc_se'] = args.lambda_disc_se
     params_model['lambda_disc_sk'] = args.lambda_disc_sk
     params_model['lambda_disc_im'] = args.lambda_disc_im
@@ -254,6 +254,7 @@ def main():
             logger.add_scalar('generator adversarial loss', losses['gen_adv'].avg)
             logger.add_scalar('generator cycle consistency loss', losses['gen_cyc'].avg)
             logger.add_scalar('generator classification loss', losses['gen_cls'].avg)
+            logger.add_scalar('generator regression loss', losses['gen_reg'].avg)
             logger.add_scalar('generator loss', losses['gen'].avg)
             logger.add_scalar('semantic discriminator loss', losses['disc_se'].avg)
             logger.add_scalar('sketch discriminator loss', losses['disc_sk'].avg)
@@ -294,6 +295,7 @@ def train(train_loader, sem_pcyc_model, epoch, args):
     losses_gen_adv = AverageMeter()
     losses_gen_cyc = AverageMeter()
     losses_gen_cls = AverageMeter()
+    losses_gen_reg = AverageMeter()
     losses_gen = AverageMeter()
     losses_disc_se = AverageMeter()
     losses_disc_sk = AverageMeter()
@@ -318,6 +320,7 @@ def train(train_loader, sem_pcyc_model, epoch, args):
         losses_gen_adv.update(loss['gen_adv'].item(), sk.size(0))
         losses_gen_cyc.update(loss['gen_cyc'].item(), sk.size(0))
         losses_gen_cls.update(loss['gen_cls'].item(), sk.size(0))
+        losses_gen_reg.update(loss['gen_reg'].item(), sk.size(0))
         losses_gen.update(loss['gen'].item(), sk.size(0))
         losses_disc_se.update(loss['disc_se'].item(), sk.size(0))
         losses_disc_sk.update(loss['disc_sk'].item(), sk.size(0))
@@ -337,9 +340,9 @@ def train(train_loader, sem_pcyc_model, epoch, args):
                   .format(epoch + 1, i + 1, len(train_loader), batch_time=batch_time, loss_gen=losses_gen,
                           loss_disc=losses_disc))
 
-    losses = {'aut_enc': losses_aut_enc, 'gen_adv': losses_gen_adv, 'gen_cyc': losses_gen_cyc,
-              'gen_cls': losses_gen_cls, 'gen': losses_gen, 'disc_se': losses_disc_se, 'disc_sk': losses_disc_sk,
-              'disc_im': losses_disc_im, 'disc': losses_disc}
+    losses = {'aut_enc': losses_aut_enc, 'gen_adv': losses_gen_adv, 'gen_cyc': losses_gen_cyc, 'gen_cls':
+        losses_gen_cls, 'gen_reg': losses_gen_reg, 'gen': losses_gen, 'disc_se': losses_disc_se, 'disc_sk':
+        losses_disc_sk, 'disc_im': losses_disc_im, 'disc': losses_disc}
 
     return losses
 

@@ -28,7 +28,7 @@ year = {2019},
 <img src="./figures/sem-pcyc-demo.gif" width="500">
 </p>
 
-## [Live Demo](http://158.109.8.91/sketch_retrieval/)
+### [Live Demo](http://158.109.8.91/sketch_retrieval/)
 
 ## Retrieval Results
 

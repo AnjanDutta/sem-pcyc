@@ -17,10 +17,11 @@ class Options:
         parser.add_argument('--dataset', required=True, default='Sketchy', help='Name of the dataset')
         # Different training test sets
         parser.add_argument('--split-eccv-2018', action='store_true', default=False,
-                            help='Whether to use the train test split done in the ECCV 2018 paper')
+                            help='Whether to use the splits of ECCV 2018 paper')
         parser.add_argument('--gzs-sbir', action='store_true', default=False,
                             help='Generalized zero-shot sketch based image retrieval')
-        parser.add_argument('--filter-sketch', action='store_true', default=False, help='Filter augmented sketch')
+        parser.add_argument('--filter-sketch', action='store_true', default=False, help='Allows only one sketch per '
+                                                                                        'image (only for Sketchy)')
         # Semantic models
         parser.add_argument('--semantic-models', nargs='+', default=['word2vec-google-news', 'hieremb-path'],
                             type=str, help='Semantic model')
@@ -31,6 +32,7 @@ class Options:
         parser.add_argument('--lambda-gen-cyc', default=1.0, type=float, help='Weight on cycle consistency loss (gen)')
         parser.add_argument('--lambda-gen-adv', default=1.0, type=float, help='Weight on adversarial loss (gen)')
         parser.add_argument('--lambda-gen-cls', default=1.0, type=float, help='Weight on classification loss (gen)')
+        parser.add_argument('--lambda-gen-reg', default=0.1, type=float, help='Weight on regression loss (gen)')
         parser.add_argument('--lambda-disc-se', default=0.25, type=float, help='Weight on semantic loss (disc)')
         parser.add_argument('--lambda-disc-sk', default=0.5, type=float, help='Weight on sketch loss (disc)')
         parser.add_argument('--lambda-disc-im', default=0.5, type=float, help='Weight on image loss (disc)')

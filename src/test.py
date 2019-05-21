@@ -19,7 +19,7 @@ import itq
 import utils
 from options import Options
 from logger import Logger, AverageMeter
-from models import VGGNetFeats, Generator
+from models import SEM_PCYC
 from data import DataGeneratorSketch, DataGeneratorImage
 
 np.random.seed(0)
@@ -135,6 +135,38 @@ def main():
     # PyTorch test loader for image
     test_loader_image = DataLoader(dataset=data_test_image, batch_size=args.batch_size, shuffle=False,
                                    num_workers=args.num_workers, pin_memory=True)
+
+    # Model parameters
+    params_model = dict()
+    # Paths to pre-trained sketch and image models
+    params_model['path_sketch_model'] = path_sketch_model
+    params_model['path_image_model'] = path_image_model
+    # Dimensions
+    params_model['dim_out'] = args.dim_out
+    params_model['sem_dim'] = sem_dim
+    # Number of classes
+    params_model['num_clss'] = len(dict_clss)
+    # Weight (on losses) parameters
+    params_model['lambda_se'] = args.lambda_se
+    params_model['lambda_im'] = args.lambda_im
+    params_model['lambda_sk'] = args.lambda_sk
+    params_model['lambda_gen_cyc'] = args.lambda_gen_cyc
+    params_model['lambda_gen_adv'] = args.lambda_gen_adv
+    params_model['lambda_gen_cls'] = args.lambda_gen_cls
+    params_model['lambda_gen_reg'] = args.lambda_gen_reg
+    params_model['lambda_disc_se'] = args.lambda_disc_se
+    params_model['lambda_disc_sk'] = args.lambda_disc_sk
+    params_model['lambda_disc_im'] = args.lambda_disc_im
+    params_model['lambda_regular'] = args.lambda_regular
+    # Optimizers' parameters
+    params_model['lr'] = args.lr
+    params_model['momentum'] = args.momentum
+    params_model['milestones'] = args.milestones
+    params_model['gamma'] = args.gamma
+    # Files with semantic labels
+    params_model['files_semantic_labels'] = files_semantic_labels
+    # Class dictionary
+    params_model['dict_clss'] = dict_clss
 
     # Model
     sem_pcyc_model = SEM_PCYC(params_model)
