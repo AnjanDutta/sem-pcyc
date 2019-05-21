@@ -281,6 +281,12 @@ def main():
                       np.mean(valid_data['aps@200']), valid_data['time'], valid_data['prec@100_bin'],
                       np.mean(valid_data['aps@all_bin']), valid_data['prec@200_bin'], np.mean(valid_data['aps@200_bin']),
                       valid_data['time_bin']))
+        print('Saving qualitative results...', end='')
+        path_qualitative_results = os.path.join(path_results, 'qualitative_results')
+        utils.save_qualitative_results(root_path, sketch_dir, sketch_sd, photo_dir, photo_sd,
+                                       np.array(valid_data['aps@all']), sim, str_sim, te_fls_sk, sk_ind, te_fls_im,
+                                       im_ind, path_qualitative_results, save_image=args.save_image_results,
+                                       nq=args.number_qualit_results, best=args.save_best_results)
     else:
         print("No best model found at '{}'. Exiting...".format(best_model_file))
         exit()
