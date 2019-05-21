@@ -125,6 +125,9 @@ def main():
         splits['te_fls_im'] = np.concatenate((tr_fls_im_[idx_im], splits['te_fls_im']), axis=0)
         splits['te_clss_im'] = np.concatenate((tr_clss_im_[idx_im], splits['te_clss_im']), axis=0)
 
+    # class dictionary
+    dict_clss = utils.create_dict_texts(splits['tr_clss_im'])
+
     data_test_sketch = DataGeneratorSketch(args.dataset, root_path, sketch_dir, sketch_sd, splits['te_fls_sk'],
                                            splits['te_clss_sk'], transforms=transform_sketch)
     data_test_image = DataGeneratorImage(args.dataset, root_path, photo_dir, photo_sd, splits['te_fls_im'],
