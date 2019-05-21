@@ -18,7 +18,7 @@ PyTorch implementation of our SEM-PCYC model for zero-shot sketch-based image re
 author = {Anjan Dutta and Zeynep Akata},
 title = {Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval},
 booktitle = {CVPR},
-year = {2019},
+year = {2019}
 }
 ```
 
@@ -31,8 +31,7 @@ year = {2019},
 ## Live Demo
 
 <p align="center">
-<a href="http://158.109.8.91/sketch_retrieval">
-<img src="./figures/screen-shot-live-demo.png" width="500">
+<a href="http://158.109.8.91/sketch_retrieval"><img src="./figures/screen-shot-live-demo.png" width="500">
 </p>
 
 ## Retrieval Results

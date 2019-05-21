@@ -206,9 +206,9 @@ def main():
                       , valid_data['time_bin']))
         print('Saving qualitative results...', end='')
         path_qualitative_results = os.path.join(path_results, 'qualitative_results')
-        utils.save_qualitative_results(root_path, sketch_dir, sketch_sd, photo_dir, photo_sd, te_fls_sk, te_fls_im,
-                                       path_qualitative_results, np.array(valid_data['aps@all']), valid_data['sim_euc'],
-                                       valid_data['str_sim'], save_image=args.save_image_results,
+        utils.save_qualitative_results(root_path, sketch_dir, sketch_sd, photo_dir, photo_sd, splits['te_fls_sk'],
+                                       splits['te_fls_im'], path_qualitative_results, valid_data['aps@all'],
+                                       valid_data['sim_euc'], valid_data['str_sim'], save_image=args.save_image_results,
                                        nq=args.number_qualit_results, best=args.save_best_results)
     else:
         print("No best model found at '{}'. Exiting...".format(best_model_file))
