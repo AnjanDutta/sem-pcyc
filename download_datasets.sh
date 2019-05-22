@@ -21,13 +21,16 @@ chmod 755 -R $path_dataset
 ############################################# download the Sketchy dataset #############################################
 echo "Downloading the Sketchy dataset (it will take some time)"
 python3 src/download_gdrive.py 0B7ISyeE8QtDdTjE1MG9Gcy1kSkE $path_dataset/Sketchy.7z
-7z x $path_dataset/Sketchy.7z -o$path_dataset
+echo -n "Unzipping it..."
+7z x $path_dataset/Sketchy.7z -o$path_dataset > $path_dataset/garbage.txt
+echo "Done"
+rm $path_dataset/garbage.txt
 rm $path_dataset/Sketchy.7z
 rm $path_dataset/README.txt
 mv $path_dataset/256x256 $path_dataset/Sketchy
 echo "Downloading the extended photos of Sketchy dataset (it will take some time)"
 python3 src/download_gdrive.py 0B2U-hnwRkpRrdGZKTzkwbkEwVkk $path_dataset/Sketchy/extended_photo.zip
-echo "Unzipping it"
+echo -n "Unzipping it..."
 unzip -qq $path_dataset/Sketchy/extended_photo.zip -d $path_dataset/Sketchy
 rm $path_dataset/Sketchy/extended_photo.zip
 mv $path_dataset/Sketchy/EXTEND_image_sketchy $path_dataset/Sketchy/extended_photo
@@ -43,6 +46,7 @@ mv $path_dataset/Sketchy/photo/tx_000000000000/hot-air_balloon $path_dataset/Ske
 mv $path_dataset/Sketchy/photo/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/photo/tx_000000000000/jack_o_lantern
 mv $path_dataset/Sketchy/extended_photo/hot-air_balloon $path_dataset/Sketchy/extended_photo/hot_air_balloon
 mv $path_dataset/Sketchy/extended_photo/jack-o-lantern $path_dataset/Sketchy/extended_photo/jack_o_lantern
+echo "Done"
 echo "Sketchy dataset is now ready to be used"
 ############################################ download the TU-Berlin dataset ############################################
 if [[ ! -d $path_dataset/TU-Berlin ]]; then
@@ -50,7 +54,7 @@ if [[ ! -d $path_dataset/TU-Berlin ]]; then
 fi
 echo "Downloading the sketches of TU-Berlin dataset (it will take some time)"
 wget http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/sketches_png.zip -O $path_dataset/TU-Berlin/sketches.zip
-echo "Unzipping it"
+echo -n "Unzipping it..."
 unzip -qq $path_dataset/TU-Berlin/sketches.zip -d $path_dataset/TU-Berlin
 rm $path_dataset/TU-Berlin/sketches.zip
 mv $path_dataset/TU-Berlin/png $path_dataset/TU-Berlin/sketches
@@ -101,9 +105,10 @@ mv $path_dataset/'TU-Berlin/sketches/wrist-watch' $path_dataset/'TU-Berlin/sketc
 mv $path_dataset/'TU-Berlin/sketches/teddy-bear' $path_dataset/'TU-Berlin/sketches/teddy_bear'
 mv $path_dataset/'TU-Berlin/sketches/head-phones' $path_dataset/'TU-Berlin/sketches/head_phones'
 mv $path_dataset/'TU-Berlin/sketches/tennis-racket' $path_dataset/'TU-Berlin/sketches/tennis_racket'
+echo "Done"
 echo "Downloading the images of TU-Berlin dataset (it will take some time)"
 python3 src/download_gdrive.py 0B2U-hnwRkpRrMFVvTmFQa3dmSUk $path_dataset/TU-Berlin/images.zip
-echo "Unzipping it"
+echo -n "Unzipping it..."
 unzip -qq $path_dataset/TU-Berlin/images.zip -d $path_dataset/TU-Berlin
 rm $path_dataset/TU-Berlin/images.zip
 mv $path_dataset/TU-Berlin/ImageResized $path_dataset/TU-Berlin/images
@@ -160,4 +165,5 @@ mv $path_dataset/'TU-Berlin/images/griaffe' $path_dataset/'TU-Berlin/images/gira
 mv $path_dataset/'TU-Berlin/images/diamod' $path_dataset/'TU-Berlin/images/diamond'
 mv $path_dataset/'TU-Berlin/images/spidar' $path_dataset/'TU-Berlin/images/spider'
 find $path_dataset/TU-Berlin/images -type f -name '*.JPEG' -print0 | xargs -0 rename 's/\.JPEG/\.jpg/'
+echo "Done"
 echo "TU-Berlin dataset is now ready to be used"
