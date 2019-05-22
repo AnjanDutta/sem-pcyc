@@ -135,7 +135,7 @@ mv $path_dataset/'TU-Berlin/images/carsedan' $path_dataset/'TU-Berlin/images/car
 mv $path_dataset/'TU-Berlin/images/mouse' $path_dataset/'TU-Berlin/images/mouse_(animal)'
 mv $path_dataset/'TU-Berlin/images/paperclip' $path_dataset/'TU-Berlin/images/paper_clip'
 mv $path_dataset/'TU-Berlin/images/pipe' $path_dataset/'TU-Berlin/images/pipe_(for_smoking)'
-mv $path_dataset/'TU-Berlin/images/spaceshuttle' $path_dataset/'TU-Berlin/images/space_shuttle'
+mv $path_dataset/'TU-Berlin/images/spacesshuttle' $path_dataset/'TU-Berlin/images/space_shuttle'
 mv $path_dataset/'TU-Berlin/images/satellitedish' $path_dataset/'TU-Berlin/images/satellite_dish'
 mv $path_dataset/'TU-Berlin/images/palmtree' $path_dataset/'TU-Berlin/images/palm_tree'
 mv $path_dataset/'TU-Berlin/images/flyingsaucer' $path_dataset/'TU-Berlin/images/flying_saucer'
