@@ -143,7 +143,7 @@ def load_files_sketchy_zeroshot(root_path, split_eccv_2018=False, filter_sketch=
     clss_im = np.array([f.split('/')[0] for f in fls_im])
 
     # all the unique classes
-    classes = os.listdir(path_sk)
+    classes = sorted(os.listdir(path_sk))
 
     # divide the classes
     if split_eccv_2018:
