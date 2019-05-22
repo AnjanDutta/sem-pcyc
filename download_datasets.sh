@@ -31,16 +31,17 @@ echo "Unzipping it"
 unzip $path_dataset/Sketchy/extended_photo.zip -d $path_dataset/Sketchy
 rm $path_dataset/Sketchy/extended_photo.zip
 mv $path_dataset/Sketchy/EXTEND_image_sketchy $path_dataset/Sketchy/extended_photo
-echo "Removing some augmented folders"
 rm -r $path_dataset/Sketchy/sketch/tx_000000000010
 rm -r $path_dataset/Sketchy/sketch/tx_000000000110
 rm -r $path_dataset/Sketchy/sketch/tx_000000001010
 rm -r $path_dataset/Sketchy/sketch/tx_000000001110
 rm -r $path_dataset/Sketchy/sketch/tx_000100000000
 rm -r $path_dataset/Sketchy/photo/tx_000100000000
-echo "Renaming some classes (for semantic embedding purpose)"
-rename 's/-/_/g' $path_dataset/Sketchy/*/tx_000000000000/*
-echo "Sketchy dataset is now ready to be used."
+mv $path_dataset/Sketchy/sketch/tx_000000000000/hot-air_balloon $path_dataset/Sketchy/sketch/tx_000000000000/hot_air_balloon
+mv $path_dataset/Sketchy/sketch/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/sketch/tx_000000000000/jack_o_lantern
+mv $path_dataset/Sketchy/photo/tx_000000000000/hot-air_balloon $path_dataset/Sketchy/photo/tx_000000000000/hot_air_balloon
+mv $path_dataset/Sketchy/photo/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/photo/tx_000000000000/jack_o_lantern
+echo "Sketchy dataset is now ready to be used"
 ############################################ download the TU-Berlin dataset ############################################
 if [[ ! -d $path_dataset/TU-Berlin ]]; then
   mkdir $path_dataset/TU-Berlin
@@ -152,5 +153,4 @@ mv $path_dataset/'TU-Berlin/images/teddybear' $path_dataset/'TU-Berlin/images/te
 mv $path_dataset/'TU-Berlin/images/headphones' $path_dataset/'TU-Berlin/images/head_phones'
 mv $path_dataset/'TU-Berlin/images/tennisracket' $path_dataset/'TU-Berlin/images/tennis_racket'
 find $path_dataset/TU-Berlin/images -type f -name '*.JPEG' -print0 | xargs -0 rename 's/\.JPEG/\.jpg/'
-
-
+echo "TU-Berlin dataset is now ready to be used"
