@@ -41,6 +41,8 @@ mv $path_dataset/Sketchy/sketch/tx_000000000000/hot-air_balloon $path_dataset/Sk
 mv $path_dataset/Sketchy/sketch/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/sketch/tx_000000000000/jack_o_lantern
 mv $path_dataset/Sketchy/photo/tx_000000000000/hot-air_balloon $path_dataset/Sketchy/photo/tx_000000000000/hot_air_balloon
 mv $path_dataset/Sketchy/photo/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/photo/tx_000000000000/jack_o_lantern
+mv $path_dataset/Sketchy/extended_photo/tx_000000000000/hot-air_balloon $path_dataset/Sketchy/extended_photo/tx_000000000000/hot_air_balloon
+mv $path_dataset/Sketchy/extended_photo/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/extended_photo/tx_000000000000/jack_o_lantern
 echo "Sketchy dataset is now ready to be used"
 ############################################ download the TU-Berlin dataset ############################################
 if [[ ! -d $path_dataset/TU-Berlin ]]; then
