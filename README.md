@@ -11,17 +11,6 @@ PyTorch implementation of our SEM-PCYC model for zero-shot sketch-based image re
 [Anjan Dutta](https://sites.google.com/site/2adutta/), [Zeynep Akata](https://ivi.fnwi.uva.nl/uvaboschdeltalab/people/zeynep-akata/)  
 [CVPR, 2019](http://cvpr2019.thecvf.com/)
 
-
-#### Citation
-```angularjs
-@inproceedings{Dutta2019SEMPCYC,
-author = {Anjan Dutta and Zeynep Akata},
-title = {Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval},
-booktitle = {CVPR},
-year = {2019}
-}
-```
-
 ## Demo Video
 
 <p align="center">
@@ -83,10 +72,18 @@ path_dataset = <where all the datasets will be downloaded>
 path_aux = <where all the auxiliary folders and files will be saved>
 ```
 ### Download datasets
+* Sketchy
+* TU-Berlin
 ```bash
 bash download_datasets.sh
 ```
-### Download pre-trained models
+### Download pretrained models
+* Sketchy
+    * sketch
+    * image  
+* TU-Berlin
+    * sketch
+    * image
 ```bash
 bash download_models.sh
 ```
@@ -102,5 +99,16 @@ or
 ```bash
 python3 src/train.py --test --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
 ```
+
+### Citation
+```
+@inproceedings{Dutta2019SEMPCYC,
+author = {Anjan Dutta and Zeynep Akata},
+title = {Semantically Tied Paired Cycle Consistency for Zero-Shot Sketch-based Image Retrieval},
+booktitle = {CVPR},
+year = {2019}
+}
+```
+
 ## Author
 * [Anjan Dutta](https://sites.google.com/site/2adutta/) ([@AnjanDutta](https://github.com/AnjanDutta))
