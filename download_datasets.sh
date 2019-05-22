@@ -41,8 +41,8 @@ mv $path_dataset/Sketchy/sketch/tx_000000000000/hot-air_balloon $path_dataset/Sk
 mv $path_dataset/Sketchy/sketch/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/sketch/tx_000000000000/jack_o_lantern
 mv $path_dataset/Sketchy/photo/tx_000000000000/hot-air_balloon $path_dataset/Sketchy/photo/tx_000000000000/hot_air_balloon
 mv $path_dataset/Sketchy/photo/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/photo/tx_000000000000/jack_o_lantern
-mv $path_dataset/Sketchy/extended_photo/tx_000000000000/hot-air_balloon $path_dataset/Sketchy/extended_photo/tx_000000000000/hot_air_balloon
-mv $path_dataset/Sketchy/extended_photo/tx_000000000000/jack-o-lantern $path_dataset/Sketchy/extended_photo/tx_000000000000/jack_o_lantern
+mv $path_dataset/Sketchy/extended_photo/hot-air_balloon $path_dataset/Sketchy/extended_photo/hot_air_balloon
+mv $path_dataset/Sketchy/extended_photo/jack-o-lantern $path_dataset/Sketchy/extended_photo/jack_o_lantern
 echo "Sketchy dataset is now ready to be used"
 ############################################ download the TU-Berlin dataset ############################################
 if [[ ! -d $path_dataset/TU-Berlin ]]; then
@@ -154,5 +154,10 @@ mv $path_dataset/'TU-Berlin/images/wristwatching' $path_dataset/'TU-Berlin/image
 mv $path_dataset/'TU-Berlin/images/teddybear' $path_dataset/'TU-Berlin/images/teddy_bear'
 mv $path_dataset/'TU-Berlin/images/headphones' $path_dataset/'TU-Berlin/images/head_phones'
 mv $path_dataset/'TU-Berlin/images/tennisracket' $path_dataset/'TU-Berlin/images/tennis_racket'
+mv $path_dataset/'TU-Berlin/images/tromobone' $path_dataset/'TU-Berlin/images/trombone'
+mv $path_dataset/'TU-Berlin/images/chandeler' $path_dataset/'TU-Berlin/images/chandelier'
+mv $path_dataset/'TU-Berlin/images/griaffe' $path_dataset/'TU-Berlin/images/giraffe'
+mv $path_dataset/'TU-Berlin/images/diamod' $path_dataset/'TU-Berlin/images/diamond'
+mv $path_dataset/'TU-Berlin/images/spidar' $path_dataset/'TU-Berlin/images/spider'
 find $path_dataset/TU-Berlin/images -type f -name '*.JPEG' -print0 | xargs -0 rename 's/\.JPEG/\.jpg/'
 echo "TU-Berlin dataset is now ready to be used"
