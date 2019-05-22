@@ -28,7 +28,7 @@ mv $path_dataset/256x256 $path_dataset/Sketchy
 echo "Downloading the extended photos of Sketchy dataset (it will take some time)"
 python3 src/download_gdrive.py 0B2U-hnwRkpRrdGZKTzkwbkEwVkk $path_dataset/Sketchy/extended_photo.zip
 echo "Unzipping it"
-unzip $path_dataset/Sketchy/extended_photo.zip -d $path_dataset/Sketchy -q
+unzip -qq $path_dataset/Sketchy/extended_photo.zip -d $path_dataset/Sketchy
 rm $path_dataset/Sketchy/extended_photo.zip
 mv $path_dataset/Sketchy/EXTEND_image_sketchy $path_dataset/Sketchy/extended_photo
 rm -r $path_dataset/Sketchy/sketch/tx_000000000010
@@ -51,7 +51,7 @@ fi
 echo "Downloading the sketches of TU-Berlin dataset (it will take some time)"
 wget http://cybertron.cg.tu-berlin.de/eitz/projects/classifysketch/sketches_png.zip -O $path_dataset/TU-Berlin/sketches.zip
 echo "Unzipping it"
-unzip $path_dataset/TU-Berlin/sketches.zip -d $path_dataset/TU-Berlin -q
+unzip -qq $path_dataset/TU-Berlin/sketches.zip -d $path_dataset/TU-Berlin
 rm $path_dataset/TU-Berlin/sketches.zip
 mv $path_dataset/TU-Berlin/png $path_dataset/TU-Berlin/sketches
 mv $path_dataset/'TU-Berlin/sketches/flying bird' $path_dataset/'TU-Berlin/sketches/flying_bird'
@@ -104,7 +104,7 @@ mv $path_dataset/'TU-Berlin/sketches/tennis-racket' $path_dataset/'TU-Berlin/ske
 echo "Downloading the images of TU-Berlin dataset (it will take some time)"
 python3 src/download_gdrive.py 0B2U-hnwRkpRrMFVvTmFQa3dmSUk $path_dataset/TU-Berlin/images.zip
 echo "Unzipping it"
-unzip $path_dataset/TU-Berlin/images.zip -d $path_dataset/TU-Berlin -q
+unzip -qq $path_dataset/TU-Berlin/images.zip -d $path_dataset/TU-Berlin
 rm $path_dataset/TU-Berlin/images.zip
 mv $path_dataset/TU-Berlin/ImageResized $path_dataset/TU-Berlin/images
 mv $path_dataset/'TU-Berlin/images/flyingbird' $path_dataset/'TU-Berlin/images/flying_bird'
