@@ -80,26 +80,33 @@ bash download_datasets.sh
 ### Download pretrained models
 * Sketchy
     * sketch
-    * image  
+    * image
+    * hieremb-jcn + word2vec-google-news
 * TU-Berlin
     * sketch
     * image
+    * hieremb-path + word2vec-google-news
 ```bash
 bash download_models.sh
 ```
-### Train
-```bash
-python3 src/train.py --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
-```
 ### Test
+##### Sketchy
 ```bash
-python3 src/test.py --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
+python3 src/test.py --dataset Sketchy_extended --dim-out 64 --semantic-models hieremb-jcn word2vec-google-news
 ```
-or
+##### TU-Berlin
 ```bash
-python3 src/train.py --test --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news
+python3 src/test.py --dataset TU-Berlin --dim-out 64 --semantic-models hieremb-path word2vec-google-news
 ```
-
+### Train
+##### Sketchy
+```bash
+python3 src/train.py --dataset Sketchy_extended --dim-out 64 --semantic-models word2vec-google-news --epochs 1000 --early-stop 200 --lr 0.0001
+```
+##### TU-Berlin
+```bash
+python3 src/train.py --dataset TU-Berlin --dim-out 64 --semantic-models word2vec-google-news --epochs 1000 --early-stop 200 --lr 0.0001
+```
 ### Citation
 ```
 @inproceedings{Dutta2019SEMPCYC,
