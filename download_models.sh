@@ -25,3 +25,4 @@ unzip $path_aux/aux_files.zip -d $path_aux
 rm $path_aux/aux_files.zip
 echo "Done"
 chmod 755 -R $path_aux
+echo "Pre-trained models are now ready to be used"
