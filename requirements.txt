@@ -7,7 +7,7 @@ torch==1.1.0
 numpy==1.14.0
 argparse==1.1
 gensim==3.5.0
-joblib==0.12.1
+joblib==1.2.0
 sklearn==0.19.2
 torchvision==0.2.2.post3
 glob
